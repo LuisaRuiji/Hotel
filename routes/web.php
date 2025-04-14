@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,5 +32,10 @@ Route::middleware('auth')->group(function () {
         return view('dashboards.reception');
     });
 });
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/rooms', [AdminController::class, 'rooms'])->name('admin.rooms');
+Route::get('/admin/receptionist', [AdminController::class, 'receptionist'])->name('admin.receptionist');
+Route::get('/admin/services', [AdminController::class, 'services'])->name('admin.services');
 
 require __DIR__.'/auth.php';
