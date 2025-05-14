@@ -11,7 +11,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
 Route::get('/rooms/{room}/book', [RoomController::class, 'bookingForm'])->name('rooms.book');
-Route::post('/rooms/{room}/book', [RoomController::class, 'processBooking'])->name('rooms.process-booking');
+Route::post('/rooms/{room}/book', [RoomController::class, 'processBooking'])
+    ->middleware('auth')
+    ->name('rooms.process-booking');
 
 // Commented out the original /dashboard route
 // Route::get('/dashboard', function () {

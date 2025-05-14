@@ -50,26 +50,6 @@ class ServiceSeeder extends Seeder
                 'image_url' => 'services/room-breakfast.jpg'
             ],
 
-            // Transportation
-            [
-                'name' => 'Airport Transfer',
-                'description' => 'Luxury vehicle transfer between hotel and airport.',
-                'price' => 80.00,
-                'category' => 'transport',
-                'duration' => 'Varies',
-                'is_available' => true,
-                'image_url' => 'services/airport-transfer.jpg'
-            ],
-            [
-                'name' => 'City Tour Service',
-                'description' => 'Private guided tour of city highlights in a luxury vehicle.',
-                'price' => 150.00,
-                'category' => 'transport',
-                'duration' => '4 hours',
-                'is_available' => true,
-                'image_url' => 'services/city-tour.jpg'
-            ],
-
             // Laundry
             [
                 'name' => 'Express Laundry',
@@ -88,47 +68,7 @@ class ServiceSeeder extends Seeder
                 'duration' => '24 hours',
                 'is_available' => true,
                 'image_url' => 'services/dry-cleaning.jpg'
-            ],
-
-            // Activities & Recreation
-            [
-                'name' => 'Personal Training Session',
-                'description' => 'One-on-one fitness session with certified trainer.',
-                'price' => 90.00,
-                'category' => 'activities',
-                'duration' => '60 minutes',
-                'is_available' => true,
-                'image_url' => 'services/personal-training.jpg'
-            ],
-            [
-                'name' => 'Yoga Class',
-                'description' => 'Private or group yoga session with experienced instructor.',
-                'price' => 40.00,
-                'category' => 'activities',
-                'duration' => '60 minutes',
-                'is_available' => true,
-                'image_url' => 'services/yoga.jpg'
-            ],
-
-            // Business Services
-            [
-                'name' => 'Meeting Room Rental',
-                'description' => 'Fully equipped meeting room with AV equipment and refreshments.',
-                'price' => 200.00,
-                'category' => 'business',
-                'duration' => 'Per day',
-                'is_available' => true,
-                'image_url' => 'services/meeting-room.jpg'
-            ],
-            [
-                'name' => 'Business Center Services',
-                'description' => 'Printing, scanning, and administrative support services.',
-                'price' => 25.00,
-                'category' => 'business',
-                'duration' => 'Per hour',
-                'is_available' => true,
-                'image_url' => 'services/business-center.jpg'
-            ],
+            ]
         ];
 
         foreach ($services as $service) {
