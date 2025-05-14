@@ -1,66 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hotel Room Reservation and Service System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive hotel management system built with Laravel, focusing on streamlining hotel operations and enhancing guest experience.
 
-## About Laravel
+## Core Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Room Management
+- **Room Booking System**
+  - Real-time availability checking
+  - Calendar-based booking interface
+  - Room type and preference selection
+  - Booking modification and cancellation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Room Status Tracking**
+  - Current occupancy status
+  - Cleaning and maintenance status
+  - Room type and features display
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Guest Services
+- **Check-in/Check-out Processing**
+  - Digital registration process
+  - Key card management
+  - Express check-out option
+  - Late check-out requests
 
-## Learning Laravel
+- **Room Service Management**
+  - Service request handling
+  - Special requirements tracking
+  - Real-time request status updates
+  - Housekeeping schedule management
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 3. Financial Management
+- **Billing and Payments**
+  - Automated billing system
+  - Multiple payment method support
+  - Invoice generation
+  - Deposit handling
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Revenue Reporting**
+  - Daily/monthly revenue reports
+  - Occupancy rate analysis
+  - Service usage statistics
+  - Financial forecasting
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Customer Relationship
+- **Loyalty Program**
+  - Points accumulation system
+  - Member tier management
+  - Special offers for members
+  - Points redemption tracking
 
-## Laravel Sponsors
+- **Discount Management**
+  - Seasonal promotions
+  - Group booking discounts
+  - Corporate rate management
+  - Special package deals
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Technology Stack
 
-### Premium Partners
+- **Frontend**: HTML5, CSS3, JavaScript, TailwindCSS
+- **Backend**: Laravel PHP Framework
+- **Database**: MySQL
+- **Authentication**: Laravel Sanctum
+- **UI Components**: Livewire
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Color Palette
 
-## Contributing
+The system uses a warm, welcoming color scheme:
+- Main Background: `#F5EBDD`
+- Secondary/Cards: `#EFD6D2`
+- Buttons/Accents: `#D4BFAA`
+- Highlights: `#C19A8B`
+- Text: `#3F3F3F`
+- Clean Areas: `#FAF9F6`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## User Roles
 
-## Code of Conduct
+1. **Admin**
+   - Full system access
+   - Staff management
+   - System configuration
+   - Report generation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Receptionist**
+   - Booking management
+   - Guest check-in/out
+   - Room service coordination
+   - Payment processing
 
-## Security Vulnerabilities
+3. **Customer**
+   - Room booking
+   - Service requests
+   - Account management
+   - Loyalty program access
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Getting Started
+
+### Prerequisites
+- PHP >= 8.1
+- Composer
+- Node.js & NPM
+- MySQL
+
+### Installation
+1. Clone the repository
+```bash
+git clone [repository-url]
+```
+
+2. Install PHP dependencies
+```bash
+composer install
+```
+
+3. Install NPM packages
+```bash
+npm install
+```
+
+4. Configure environment variables
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Run migrations and seeders
+```bash
+php artisan migrate --seed
+```
+
+6. Start the development server
+```bash
+php artisan serve
+npm run dev
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[MIT License](LICENSE.md)
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
