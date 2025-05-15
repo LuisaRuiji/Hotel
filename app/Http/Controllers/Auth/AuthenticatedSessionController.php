@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         // Check if there was an intended room booking
         if ($roomId = session('intended_room_booking')) {
             session()->forget('intended_room_booking');
-            return redirect()->route('rooms.book', $roomId);
+            return redirect()->route('customer.book-room', ['room' => $roomId]);
         }
         
         // Role-based redirection

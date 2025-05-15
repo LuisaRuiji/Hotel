@@ -343,4 +343,29 @@ class ReceptionistController extends Controller
             return back()->with('error', 'Failed to reject reservation: ' . $e->getMessage());
         }
     }
+
+    public function updateRoomStatus($id, Request $request)
+    {
+        try {
+            $room = Room::findOrFail($id);
+            $newStatus = $request->status;
+            
+            // Validate the status
+            if (!in_array($newStatus, [
+                Room::STATUS_AVAILABLE, 
+                Room::STATUS_CLEANING, 
+                Room::STATUS_RESERVED, 
+                Room::STATUS_OCCUPIED
+            ])) {
+                return back()->with('error', 'Invalid room status');
+            }
+            
+            $room->status = $newStatus;
+            $room->save();
+            
+            return back()->with('success', "Room {$room->room_number} status has been updated to " . ucfirst($newStatus));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update room status: ' . $e->getMessage());
+        }
+    }
 } 

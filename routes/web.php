@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/book-room/{room}', [RoomController::class, 'bookingForm'])->name('customer.book-room');
     Route::post('/book-room/{room}', [RoomController::class, 'processBooking'])->name('customer.book-room.store');
     Route::get('/bookings/{booking}/confirmation', [RoomController::class, 'confirmation'])->name('bookings.confirmation');
+    Route::post('/bookings/{booking}/cancel', [CustomerController::class, 'cancelBooking'])->name('customer.booking.cancel');
+    Route::get('/bookings/cancel/payment', [CustomerController::class, 'showCancellationPayment'])->name('customer.booking.cancel.payment');
+    Route::post('/bookings/cancel/payment/process', [CustomerController::class, 'processCancellationPayment'])->name('customer.booking.cancel.payment.process');
+    Route::get('/bookings/{booking}/receipt', [CustomerController::class, 'showReceipt'])->name('customer.booking.receipt');
 
     // Admin routes
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -53,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/checkout/process', [ReceptionistController::class, 'processCheckout'])->name('process-checkout');
         Route::get('/checkout', [ReceptionistController::class, 'checkout'])->name('checkout');
         Route::get('/rooms', [ReceptionistController::class, 'rooms'])->name('rooms');
+        Route::post('/rooms/{id}/update-status', [ReceptionistController::class, 'updateRoomStatus'])->name('rooms.update-status');
         Route::get('/bookings/create', [ReceptionistController::class, 'createBooking'])->name('bookings.create');
         Route::get('/bookings/{id}', [ReceptionistController::class, 'viewBooking'])->name('bookings.view');
         Route::post('/bookings/{id}/approve', [ReceptionistController::class, 'approveBooking'])->name('bookings.approve');

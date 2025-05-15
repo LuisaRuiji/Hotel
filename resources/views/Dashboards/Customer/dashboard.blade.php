@@ -4,6 +4,14 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
+            <!-- Success Message -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            
             <h2 class="mb-4 fw-bold">Welcome, {{ Auth::user()->name }}</h2>
 
             <!-- Current Booking Status -->
@@ -36,28 +44,6 @@
             </div>
             @endif
 
-            <!-- Available Rooms -->
-            <div class="mb-5">
-                <h3 class="mb-3 fw-semibold">Available Rooms</h3>
-                <div class="row g-4">
-                    @forelse($availableRooms as $room)
-                        <div class="col-md-4">
-                            <div class="card h-100 shadow-sm">
-                                <img src="{{ $room->image_url ?? asset('images/rooms/default-room.jpg') }}" alt="{{ $room->type }}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title mb-1">{{ $room->type }}</h5>
-                                    <div class="mb-2 text-muted">Room {{ $room->room_number }}</div>
-                                    <div class="mb-2 fw-semibold text-primary">${{ number_format($room->price_per_night, 2) }} <span class="text-muted small">/night</span></div>
-                                    <a href="{{ route('customer.book-room', $room) }}" class="btn btn-success mt-auto">Book Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-12 text-center text-muted">No rooms available at the moment.</div>
-                    @endforelse
-                </div>
-            </div>
-
             <!-- Booking History -->
             <div class="mb-5">
                 <h3 class="mb-3 fw-semibold">Booking History</h3>
@@ -71,6 +57,7 @@
                                     <th>Check-out</th>
                                     <th>Amount</th>
                                     <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,10 +76,79 @@
                                             {{ ucfirst($booking->status) }}
                                         </span>
                                     </td>
+                                    <td>
+                                        @if($booking->status === 'pending')
+                                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#cancelBookingModal{{ $booking->id }}">
+                                                Cancel
+                                            </button>
+                                            
+                                            <!-- Cancel Booking Modal -->
+                                            <div class="modal fade" id="cancelBookingModal{{ $booking->id }}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Cancel Booking Confirmation</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to cancel your booking for Room {{ $booking->room->room_number }}?</p>
+                                                            
+                                                            <div class="alert alert-warning">
+                                                                <h6 class="fw-bold">Cancellation Policy:</h6>
+                                                                <ul class="mb-0">
+                                                                    <li>Cancellations made less than 12 hours before check-in: 50% cancellation fee</li>
+                                                                    <li>All other cancellations: 30% cancellation fee</li>
+                                                                </ul>
+                                                            </div>
+                                                            
+                                                            @php
+                                                                $now = Carbon\Carbon::now();
+                                                                // Calculate days between dates first
+                                                                $daysUntilCheckin = $now->diffInDays($booking->check_in_date);
+                                                                $hoursUntilCheckin = $daysUntilCheckin * 24;
+                                                                
+                                                                // Determine fee percentage based on hours until check-in
+                                                                $cancellationFeePercentage = $hoursUntilCheckin < 12 ? 50 : 30;
+                                                                
+                                                                $cancellationFeeAmount = ($booking->total_amount * $cancellationFeePercentage) / 100;
+                                                            @endphp
+                                                            
+                                                            <p class="mb-0">
+                                                                <strong>Cancellation fee:</strong> 
+                                                                ₱{{ number_format($cancellationFeeAmount, 2) }} 
+                                                                ({{ $cancellationFeePercentage }}% of ₱{{ number_format($booking->total_amount, 2) }})
+                                                            </p>
+                                                            
+                                                            <div class="small text-muted mt-2">
+                                                                <strong>Details:</strong><br>
+                                                                Current time: {{ $now->format('M d, Y H:i:s') }}<br>
+                                                                Check-in: {{ $booking->check_in_date->format('M d, Y H:i:s') }}<br>
+                                                                Hours until check-in: {{ $hoursUntilCheckin }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <form action="{{ route('customer.booking.cancel', $booking) }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="cancellation_fee" value="{{ $cancellationFeeAmount }}">
+                                                                <button type="submit" class="btn btn-danger">Pay Fee & Confirm Cancellation</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @elseif($booking->status === 'completed' || $booking->status === 'checked_in')
+                                            <a href="{{ route('customer.booking.receipt', $booking) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-receipt me-1"></i> Receipt
+                                            </a>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted py-4">No booking history found</td>
+                                    <td colspan="6" class="text-center text-muted py-4">No booking history found</td>
                                 </tr>
                                 @endforelse
                             </tbody>

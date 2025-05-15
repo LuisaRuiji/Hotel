@@ -86,6 +86,10 @@
 
                     <form action="{{ route('rooms.process-booking', $room) }}" method="POST" id="bookingForm">
                         @csrf
+                        <input type="hidden" name="_method" value="POST">
+                        <!-- For debugging -->
+                        <input type="hidden" name="debug_timestamp" value="{{ time() }}">
+                        
                         <div class="row g-4">
                             <!-- Dates -->
                             <div class="col-md-6">
@@ -214,110 +218,6 @@
                                             <span class="h5 mb-0" id="totalAmount">-</span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Method -->
-                            <div class="col-12 mb-4">
-                                <h5 class="card-title mb-3">Payment Method</h5>
-                                <div class="btn-group w-100" role="group">
-                                    <button type="button" id="cashBtn" 
-                                            class="btn btn-outline-primary flex-grow-1 py-3" 
-                                            onclick="selectPaymentMethod('cash')">
-                                        <i class="fas fa-money-bill-wave me-2"></i> Cash
-                                    </button>
-                                    <button type="button" id="creditCardBtn" 
-                                            class="btn btn-outline-primary flex-grow-1 py-3" 
-                                            onclick="selectPaymentMethod('credit_card')">
-                                        <i class="fas fa-credit-card me-2"></i> Credit Card
-                                    </button>
-                                </div>
-                                <input type="hidden" name="payment_method" id="paymentMethod" value="cash">
-                            </div>
-
-                            <!-- Credit Card Details -->
-                            <div id="creditCardDetails" class="col-12 mb-4 d-none">
-                                <div class="credit-card-form">
-                                    <h5 class="mb-4">Credit Card Details</h5>
-                                    
-                                    <!-- Card Number -->
-                                    <div class="mb-3">
-                                        <label for="cardNumber" class="form-label">Card Number</label>
-                                        <div class="card-number-wrapper">
-                                            <input type="text" 
-                                                   class="form-control form-control-lg credit-card-input" 
-                                                   id="cardNumber" 
-                                                   name="card_number" 
-                                                   placeholder="•••• •••• •••• ••••"
-                                                   required>
-                                            <span class="card-type-icon"></span>
-                                        </div>
-                                        <div class="invalid-feedback">Please enter a valid credit card number</div>
-                                    </div>
-
-                                    <div class="row">
-                                        <!-- Expiry Date -->
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="expiryDate" class="form-label">Expiry Date</label>
-                                            <input type="text" 
-                                                   class="form-control form-control-lg" 
-                                                   id="expiryDate" 
-                                                   name="expiry_date" 
-                                                   placeholder="MM / YY"
-                                                   required>
-                                            <div class="invalid-feedback">Please enter a valid expiry date</div>
-                                        </div>
-
-                                        <!-- CVV -->
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="cvv" class="form-label">CVV</label>
-                                            <input type="text" 
-                                                   class="form-control form-control-lg" 
-                                                   id="cvv" 
-                                                   name="cvv" 
-                                                   placeholder="•••"
-                                                   required>
-                                            <div class="invalid-feedback">Please enter a valid CVV</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Card Holder Name -->
-                                    <div class="mb-3">
-                                        <label for="cardHolderName" class="form-label">Card Holder Name</label>
-                                        <input type="text" 
-                                               class="form-control form-control-lg" 
-                                               id="cardHolderName" 
-                                               name="card_holder_name" 
-                                               placeholder="Name as shown on card"
-                                               required>
-                                        <div class="invalid-feedback">Please enter the cardholder name</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Date Selection with Calendar -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="check_in">
-                                        Check-in Date
-                                    </label>
-                                    <input type="date" 
-                                           id="check_in" 
-                                           name="check_in" 
-                                           class="w-full px-3 py-2 border rounded-md"
-                                           min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                           value="{{ old('check_in') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="check_out">
-                                        Check-out Date
-                                    </label>
-                                    <input type="date" 
-                                           id="check_out" 
-                                           name="check_out" 
-                                           class="w-full px-3 py-2 border rounded-md"
-                                           min="{{ date('Y-m-d', strtotime('+2 day')) }}"
-                                           value="{{ old('check_out') }}">
                                 </div>
                             </div>
 
@@ -506,173 +406,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     checkOutInput.addEventListener('change', updatePriceSummary);
-});
-
-function selectPaymentMethod(method) {
-    document.getElementById('paymentMethod').value = method;
-    const cashBtn = document.getElementById('cashBtn');
-    const creditCardBtn = document.getElementById('creditCardBtn');
-    const creditCardDetails = document.getElementById('creditCardDetails');
-
-    if (method === 'cash') {
-        cashBtn.classList.remove('btn-outline-primary');
-        cashBtn.classList.add('btn-primary');
-        creditCardBtn.classList.remove('btn-primary');
-        creditCardBtn.classList.add('btn-outline-primary');
-        creditCardDetails.classList.add('d-none');
-    } else {
-        creditCardBtn.classList.remove('btn-outline-primary');
-        creditCardBtn.classList.add('btn-primary');
-        cashBtn.classList.remove('btn-primary');
-        cashBtn.classList.add('btn-outline-primary');
-        creditCardDetails.classList.remove('d-none');
-    }
-}
-
-// Initialize Cleave.js for credit card inputs
-document.addEventListener('DOMContentLoaded', function() {
-    // Credit Card Number formatting
-    new Cleave('#cardNumber', {
-        creditCard: true,
-        onCreditCardTypeChanged: function(type) {
-            const iconElement = document.querySelector('.card-type-icon');
-            // Update card icon based on card type
-            if (type) {
-                let iconClass = 'fab ';
-                switch(type) {
-                    case 'visa':
-                        iconClass += 'fa-cc-visa text-primary';
-                        break;
-                    case 'mastercard':
-                        iconClass += 'fa-cc-mastercard text-danger';
-                        break;
-                    case 'amex':
-                        iconClass += 'fa-cc-amex text-info';
-                        break;
-                    default:
-                        iconClass += 'fa-credit-card text-secondary';
-                }
-                iconElement.className = 'card-type-icon ' + iconClass;
-            }
-        }
-    });
-
-    // Expiry Date formatting
-    new Cleave('#expiryDate', {
-        date: true,
-        datePattern: ['m', 'y'],
-        delimiter: ' / '
-    });
-
-    // CVV formatting
-    new Cleave('#cvv', {
-        numeral: true,
-        numeralPositiveOnly: true,
-        blocks: [3],
-        uppercase: false
-    });
-
-    // Form validation
-    const form = document.getElementById('bookingForm');
-    form.addEventListener('submit', function(event) {
-        if (document.getElementById('paymentMethod').value === 'credit_card') {
-            const cardNumber = document.getElementById('cardNumber');
-            const expiryDate = document.getElementById('expiryDate');
-            const cvv = document.getElementById('cvv');
-            const cardHolderName = document.getElementById('cardHolderName');
-            
-            let isValid = true;
-
-            // Validate Card Number (using Luhn algorithm)
-            if (!isValidCreditCard(cardNumber.value.replace(/\D/g, ''))) {
-                cardNumber.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                cardNumber.classList.remove('is-invalid');
-            }
-
-            // Validate Expiry Date
-            const [month, year] = expiryDate.value.split(' / ');
-            if (!isValidExpiryDate(month, year)) {
-                expiryDate.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                expiryDate.classList.remove('is-invalid');
-            }
-
-            // Validate CVV
-            if (!/^\d{3}$/.test(cvv.value)) {
-                cvv.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                cvv.classList.remove('is-invalid');
-            }
-
-            // Validate Cardholder Name
-            if (cardHolderName.value.trim().length < 3) {
-                cardHolderName.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                cardHolderName.classList.remove('is-invalid');
-            }
-
-            if (!isValid) {
-                event.preventDefault();
-            }
-        }
-    });
-});
-
-// Luhn algorithm for credit card validation
-function isValidCreditCard(number) {
-    let sum = 0;
-    let isEven = false;
     
-    // Loop through values starting from the rightmost digit
-    for (let i = number.length - 1; i >= 0; i--) {
-        let digit = parseInt(number.charAt(i));
-
-        if (isEven) {
-            digit *= 2;
-            if (digit > 9) {
-                digit -= 9;
-            }
-        }
-
-        sum += digit;
-        isEven = !isEven;
+    // Initialize the price calculation
+    if (checkInInput.value && checkOutInput.value) {
+        updatePriceSummary();
     }
-
-    return (sum % 10) === 0;
-}
-
-// Expiry date validation
-function isValidExpiryDate(month, year) {
-    if (!/^\d{2}$/.test(month) || !/^\d{2}$/.test(year)) {
-        return false;
-    }
-
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear() % 100;
-    const currentMonth = currentDate.getMonth() + 1;
-
-    month = parseInt(month);
-    year = parseInt(year);
-
-    if (month < 1 || month > 12) {
-        return false;
-    }
-
-    if (year < currentYear || (year === currentYear && month < currentMonth)) {
-        return false;
-    }
-
-    return true;
-}
-
-// Initialize with cash payment selected
-document.addEventListener('DOMContentLoaded', function() {
-    selectPaymentMethod('cash');
 });
 
 // Date validation

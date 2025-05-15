@@ -36,7 +36,9 @@ class Booking extends Model
         'cancelled_at',
         'cancelled_by',
         'checked_out_at',
-        'checked_out_by'
+        'checked_out_by',
+        'cancellation_date',
+        'refund_amount'
     ];
 
     protected $casts = [
@@ -48,7 +50,9 @@ class Booking extends Model
         'checked_out_at' => 'datetime',
         'payment_date' => 'datetime',
         'approved_at' => 'datetime',
-        'cancelled_at' => 'datetime'
+        'cancelled_at' => 'datetime',
+        'cancellation_date' => 'datetime',
+        'refund_amount' => 'decimal:2'
     ];
 
     public function user(): BelongsTo
