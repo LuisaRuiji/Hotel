@@ -7,7 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException; // Import this class
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -25,30 +24,35 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-    
-        if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
-        }
-    
+        $request->authenticate();
+
         $request->session()->regenerate();
-    
+
         $user = Auth::user();
-    
+        
+        // Check if there was an intended room booking
+        if ($roomId = session('intended_room_booking')) {
+            session()->forget('intended_room_booking');
+            return redirect()->route('rooms.book', $roomId);
+        }
+        
         // Role-based redirection
+        return redirect()->intended($this->getRedirectUrl($user));
+    }
+
+    /**
+     * Get the redirect URL based on user role.
+     */
+    private function getRedirectUrl($user): string
+    {
         switch ($user->role) {
             case 'admin':
-                return redirect()->intended('/admin/dashboard');
+                return '/admin/dashboard';
             case 'receptionist':
-                return redirect()->intended('/reception/dashboard');
+                return '/receptionist/dashboard';
             case 'customer':
             default:
-                return redirect()->intended('/dashboard');
+                return '/dashboard';
         }
     }
 

@@ -17,6 +17,13 @@ class RoomController extends Controller
 
     public function bookingForm(Room $room)
     {
+        if (!auth()->check()) {
+            // Store room info in session for after login
+            session(['intended_room_booking' => $room->id]);
+            return redirect()->route('login')
+                ->with('message', 'Please log in to continue with your booking.');
+        }
+
         $services = Service::where('is_available', true)->get();
         return view('rooms.booking', compact('room', 'services'));
     }
@@ -35,18 +42,24 @@ class RoomController extends Controller
         ]);
 
         // Check if room is available for these dates
-        $isAvailable = !Booking::where('room_id', $room->id)
+        $conflictingBooking = Booking::where('room_id', $room->id)
             ->where(function($query) use ($request) {
-                $query->whereBetween('check_in', [$request->check_in, $request->check_out])
-                    ->orWhereBetween('check_out', [$request->check_in, $request->check_out])
+                $query->whereBetween('check_in_date', [$request->check_in, $request->check_out])
+                    ->orWhereBetween('check_out_date', [$request->check_in, $request->check_out])
                     ->orWhere(function($q) use ($request) {
-                        $q->where('check_in', '<=', $request->check_in)
-                          ->where('check_out', '>=', $request->check_out);
+                        $q->where('check_in_date', '<=', $request->check_in)
+                          ->where('check_out_date', '>=', $request->check_out);
                     });
-            })->exists();
+            })->first();
 
-        if (!$isAvailable) {
-            return back()->withErrors(['message' => 'Room is not available for these dates']);
+        if ($conflictingBooking) {
+            $message = 'Room is not available for these dates. ';
+            $message .= 'The room is already booked from ' . 
+                $conflictingBooking->check_in_date->format('M d, Y') . 
+                ' to ' . 
+                $conflictingBooking->check_out_date->format('M d, Y');
+            
+            return back()->withErrors(['message' => $message])->withInput();
         }
 
         // Calculate total nights and room price
@@ -55,7 +68,7 @@ class RoomController extends Controller
         $nights = $checkIn->diffInDays($checkOut);
         
         if ($nights < 1) {
-            return back()->withErrors(['message' => 'Minimum stay is 1 night']);
+            return back()->withErrors(['message' => 'Minimum stay is 1 night'])->withInput();
         }
 
         // Calculate room total
@@ -93,11 +106,11 @@ class RoomController extends Controller
         $booking = Booking::create([
             'user_id' => Auth::id(),
             'room_id' => $room->id,
-            'check_in' => $request->check_in,
-            'check_out' => $request->check_out,
+            'check_in_date' => $request->check_in,
+            'check_out_date' => $request->check_out,
             'guests' => $request->guests,
             'special_requests' => $request->special_requests,
-            'total_price' => $totalPrice,
+            'total_amount' => $totalPrice,
             'status' => 'pending'
         ]);
 
@@ -112,5 +125,15 @@ class RoomController extends Controller
 
         return redirect()->route('bookings.confirmation', $booking)
             ->with('success', 'Your booking has been submitted successfully!');
+    }
+
+    public function confirmation(Booking $booking)
+    {
+        // Make sure the user can only see their own booking confirmation
+        if ($booking->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('bookings.confirmation', compact('booking'));
     }
 } 

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             RoomSeeder::class,
             ServiceSeeder::class,
-            // Add other seeders here as needed
+            TestBookingSeeder::class
         ]);
     }
 }

@@ -1,91 +1,41 @@
 @props(['room'])
 
-<div class="card h-100 shadow-sm border-0 room-card">
-    <!-- Room Image with Overlay -->
-    <div class="position-relative">
-        <img src="{{ $room->image_url ?? asset('images/room-placeholder.jpg') }}" 
-             class="card-img-top" alt="{{ $room->type }}"
-             style="height: 250px; object-fit: cover;"
-             onerror="this.onerror=null; this.src='{{ asset('images/room-placeholder.jpg') }}'; this.alt='Room image not available'">
-        <div class="position-absolute top-0 end-0 m-3">
-            <span class="badge bg-dark bg-opacity-75 px-3 py-2 rounded-pill">
-                Room {{ $room->room_number }}
-            </span>
+<div class="card h-100 border-0 shadow-sm room-card">
+    <x-room-image 
+        :image="$room->image_url"
+        :alt="$room->type . ' - Room ' . $room->room_number"
+    />
+    <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0" style="color: var(--primary-color);">{{ $room->type }}</h5>
+            <span class="badge" style="background-color: var(--accent-color);">Room {{ $room->room_number }}</span>
         </div>
-        @if($room->is_available)
-            <div class="position-absolute top-0 start-0 m-3">
-                <span class="badge bg-success px-3 py-2 rounded-pill">Available</span>
-            </div>
-        @endif
-    </div>
-
-    <div class="card-body p-4">
-        <!-- Room Title and Type -->
-        <div class="d-flex justify-content-between align-items-start mb-3">
-            <div>
-                <h4 class="card-title h5 text-dark mb-1">{{ $room->type }}</h4>
-                <p class="text-muted small mb-0">Standard Room</p>
-            </div>
-            <!-- Price Badge -->
-            <div class="bg-light rounded-3 p-2 text-center" style="background-color: #A7C5BD !important;">
-                <div class="fw-bold text-dark" style="color: #2E3B4E !important;">₱{{ number_format($room->price_per_night, 2) }}</div>
-                <small class="text-muted">per night</small>
-            </div>
-        </div>
-
-        <!-- Room Description -->
-        <p class="card-text mb-3" style="color: #8E9A92;">{{ $room->description }}</p>
-
-        <!-- Amenities -->
-        <div class="mb-4">
-            <h6 class="text-dark mb-2 fw-semibold">Room Features</h6>
-            <div class="d-flex flex-wrap gap-2">
-                @foreach(array_slice($room->amenities, 0, 4) as $amenity)
-                    <span class="badge rounded-pill text-dark px-3 py-2" 
-                          style="background-color: #F5F7F6;">
-                        {{ $amenity }}
-                    </span>
-                @endforeach
-                @if(count($room->amenities) > 4)
-                    <span class="badge rounded-pill text-dark px-3 py-2" 
-                          style="background-color: #F5F7F6;">
-                        +{{ count($room->amenities) - 4 }} more
-                    </span>
-                @endif
-            </div>
-        </div>
-
-        <!-- Room Info -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center text-muted">
+        <p class="card-text small text-muted mb-3">{{ Str::limit($room->description, 100) }}</p>
+        <div class="room-features small mb-3">
+            <div class="d-flex align-items-center mb-2">
                 <i class="fas fa-user-friends me-2"></i>
                 <span>Up to {{ $room->capacity }} guests</span>
             </div>
             @if($room->has_view)
-                <div class="d-flex align-items-center text-muted">
+                <div class="d-flex align-items-center mb-2">
                     <i class="fas fa-mountain me-2"></i>
-                    <span>City View</span>
+                    <span>Scenic View</span>
+                </div>
+            @endif
+            @if(!$room->is_smoking)
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-smoking-ban me-2"></i>
+                    <span>Non-smoking</span>
                 </div>
             @endif
         </div>
-
-        <!-- Action Buttons -->
-        <div class="d-grid gap-2">
-            <div class="row g-2">
-                <div class="col">
-                    <a href="{{ route('rooms.show', $room) }}" 
-                       class="btn w-100 text-white" 
-                       style="background-color: #8E9A92;">
-                        View Details
-                    </a>
+        <div class="mt-auto">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="h5 mb-0" style="color: var(--accent-color);">₱{{ number_format($room->price_per_night, 2) }}</span>
+                    <span class="small text-muted">/night</span>
                 </div>
-                <div class="col">
-                    <a href="{{ route('rooms.book', $room) }}" 
-                       class="btn w-100 text-dark" 
-                       style="background-color: #A7C5BD;">
-                        Book Now
-                    </a>
-                </div>
+                <a href="{{ route('rooms.book', $room) }}" class="btn btn-sm" style="background-color: var(--primary-color); color: white;">Book Now</a>
             </div>
         </div>
     </div>

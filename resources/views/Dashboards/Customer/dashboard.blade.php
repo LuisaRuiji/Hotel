@@ -1,161 +1,132 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Welcome, {{ Auth::user()->name }}</h2>
-                
-                <!-- Current Booking Status -->
-                @if($currentBooking)
-                <div class="mb-8">
-                    <div class="card bg-primary/5 border border-primary/20">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-lg font-semibold text-primary">Current Stay</h3>
-                                <span class="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary">
-                                    Room {{ $currentBooking->room_number }}
-                                </span>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Check-in</p>
-                                    <p class="font-medium text-gray-900 dark:text-white">
-                                        {{ $currentBooking->check_in_date->format('M d, Y') }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Check-out</p>
-                                    <p class="font-medium text-gray-900 dark:text-white">
-                                        {{ $currentBooking->check_out_date->format('M d, Y') }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Total Amount</p>
-                                    <p class="font-medium text-gray-900 dark:text-white">
-                                        ${{ number_format($currentBooking->total_amount, 2) }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex space-x-4">
-                                <a href="{{ route('customer.service-request') }}" class="btn btn-primary">
-                                    Request Service
-                                </a>
-                                <a href="{{ route('customer.extend-stay') }}" class="btn btn-secondary">
-                                    Extend Stay
-                                </a>
-                            </div>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="mb-4 fw-bold">Welcome, {{ Auth::user()->name }}</h2>
+
+            <!-- Current Booking Status -->
+            @if($currentBooking)
+            <div class="card shadow-sm mb-5 border-primary">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">Current Stay</span>
+                    <span class="badge bg-light text-primary">Room {{ $currentBooking->room_number }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="text-muted small">Check-in</div>
+                            <div class="fw-semibold">{{ $currentBooking->check_in_date->format('M d, Y') }}</div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="text-muted small">Check-out</div>
+                            <div class="fw-semibold">{{ $currentBooking->check_out_date->format('M d, Y') }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-muted small">Total Amount</div>
+                            <div class="fw-semibold text-success">${{ number_format($currentBooking->total_amount, 2) }}</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('customer.service-request') }}" class="btn btn-outline-primary">Request Service</a>
+                        <a href="{{ route('customer.extend-stay') }}" class="btn btn-primary">Extend Stay</a>
                     </div>
                 </div>
-                @endif
+            </div>
+            @endif
 
-                <!-- Quick Actions -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <a href="{{ route('customer.book-room') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Book a Room</span>
-                        </a>
-                        
-                        <a href="{{ route('customer.view-rooms') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">View Rooms</span>
-                        </a>
-                        
-                        <a href="{{ route('customer.special-requests') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Special Requests</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Booking History -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Booking History</h3>
-                    <div class="card">
-                        <div class="overflow-x-auto">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Room</th>
-                                        <th>Check-in</th>
-                                        <th>Check-out</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($bookingHistory ?? [] as $booking)
-                                    <tr>
-                                        <td>{{ $booking->room_number }}</td>
-                                        <td>{{ $booking->check_in_date->format('M d, Y') }}</td>
-                                        <td>{{ $booking->check_out_date->format('M d, Y') }}</td>
-                                        <td>${{ number_format($booking->total_amount, 2) }}</td>
-                                        <td>
-                                            <span class="px-2 py-1 text-xs rounded-full 
-                                                {{ $booking->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                                   ($booking->status === 'upcoming' ? 'bg-blue-100 text-blue-800' : 
-                                                   'bg-gray-100 text-gray-800') }}">
-                                                {{ ucfirst($booking->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-4 text-gray-500">No booking history found</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Special Offers -->
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Special Offers</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @forelse($specialOffers ?? [] as $offer)
-                        <div class="card">
-                            <div class="relative">
-                                <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" 
-                                     class="w-full h-48 object-cover rounded-t-lg">
-                                <div class="absolute top-2 right-2 px-3 py-1 bg-red-500 text-white rounded-full text-sm">
-                                    Save {{ $offer->discount }}%
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                                    {{ $offer->title }}
-                                </h4>
-                                <p class="text-gray-600 dark:text-gray-400 mb-4">
-                                    {{ $offer->description }}
-                                </p>
-                                <div class="flex justify-between items-center">
-                                    <p class="text-sm text-gray-500">
-                                        Valid until {{ $offer->valid_until->format('M d, Y') }}
-                                    </p>
-                                    <a href="{{ route('customer.book-offer', $offer) }}" class="btn btn-primary">
-                                        Book Now
-                                    </a>
+            <!-- Available Rooms -->
+            <div class="mb-5">
+                <h3 class="mb-3 fw-semibold">Available Rooms</h3>
+                <div class="row g-4">
+                    @forelse($availableRooms as $room)
+                        <div class="col-md-4">
+                            <div class="card h-100 shadow-sm">
+                                <img src="{{ $room->image_url ?? asset('images/rooms/default-room.jpg') }}" alt="{{ $room->type }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-1">{{ $room->type }}</h5>
+                                    <div class="mb-2 text-muted">Room {{ $room->room_number }}</div>
+                                    <div class="mb-2 fw-semibold text-primary">${{ number_format($room->price_per_night, 2) }} <span class="text-muted small">/night</span></div>
+                                    <a href="{{ route('customer.book-room', $room) }}" class="btn btn-success mt-auto">Book Now</a>
                                 </div>
                             </div>
                         </div>
-                        @empty
-                        <div class="col-span-2 text-center py-4 text-gray-500">
-                            No special offers available at the moment
-                        </div>
-                        @endforelse
+                    @empty
+                        <div class="col-12 text-center text-muted">No rooms available at the moment.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Booking History -->
+            <div class="mb-5">
+                <h3 class="mb-3 fw-semibold">Booking History</h3>
+                <div class="card shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Room</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($bookingHistory ?? [] as $booking)
+                                <tr>
+                                    <td>{{ $booking->room->room_number }}</td>
+                                    <td>{{ $booking->check_in_date->format('M d, Y') }}</td>
+                                    <td>{{ $booking->check_out_date->format('M d, Y') }}</td>
+                                    <td>₱{{ number_format($booking->total_amount, 2) }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {{ $booking->status === 'completed' ? 'bg-success' : 
+                                               ($booking->status === 'pending' ? 'bg-warning' :
+                                               ($booking->status === 'checked_in' ? 'bg-info' :
+                                               ($booking->status === 'cancelled' ? 'bg-danger' : 'bg-secondary'))) }}">
+                                            {{ ucfirst($booking->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">No booking history found</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+            </div>
+
+            <!-- Special Offers -->
+            <div>
+                <h3 class="mb-3 fw-semibold">Special Offers</h3>
+                <div class="row g-4">
+                    @forelse($specialOffers ?? [] as $offer)
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <div class="position-relative">
+                                <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                <span class="position-absolute top-0 end-0 m-2 badge bg-danger">Save {{ $offer->discount }}%</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ $offer->title }}</h5>
+                                <p class="card-text text-muted">{{ $offer->description }}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <small class="text-muted">Valid until {{ $offer->valid_until->format('M d, Y') }}</small>
+                                    <a href="{{ route('customer.book-offer', $offer) }}" class="btn btn-outline-primary btn-sm">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-12 text-center text-muted py-4">
+                        No special offers available at the moment
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>

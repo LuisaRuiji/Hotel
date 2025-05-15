@@ -1,143 +1,319 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Receptionist Dashboard</h2>
-                
-                <!-- Quick Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="card bg-primary/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-primary mb-2">Today's Check-ins</h3>
-                            <p class="text-3xl font-bold text-primary">{{ $todayCheckins ?? '0' }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card bg-success/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-success mb-2">Today's Check-outs</h3>
-                            <p class="text-3xl font-bold text-success">{{ $todayCheckouts ?? '0' }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card bg-info/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-info mb-2">Available Rooms</h3>
-                            <p class="text-3xl font-bold text-info">{{ $availableRooms ?? '0' }}</p>
-                        </div>
-                    </div>
-                </div>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-11">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0">Receptionist Dashboard</h2>
+                <div class="text-muted">{{ now()->format('l, F j, Y') }}</div>
+            </div>
 
-                <!-- Quick Actions -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <a href="{{ route('receptionist.checkin') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">New Check-in</span>
-                        </a>
-                        
-                        <a href="{{ route('receptionist.checkout') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Process Check-out</span>
-                        </a>
-                        
-                        <a href="{{ route('receptionist.bookings.create') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">New Booking</span>
-                        </a>
-                        
-                        <a href="{{ route('receptionist.rooms') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Room Status</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Today's Schedule -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Today's Schedule</h3>
-                    <div class="card">
-                        <div class="overflow-x-auto">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Time</th>
-                                        <th>Guest Name</th>
-                                        <th>Room</th>
-                                        <th>Action</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($todaySchedule ?? [] as $schedule)
-                                    <tr>
-                                        <td>{{ $schedule->time }}</td>
-                                        <td>{{ $schedule->guest_name }}</td>
-                                        <td>{{ $schedule->room_number }}</td>
-                                        <td>{{ $schedule->action }}</td>
-                                        <td>
-                                            <span class="px-2 py-1 text-xs rounded-full 
-                                                {{ $schedule->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                                   ($schedule->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                                   'bg-red-100 text-red-800') }}">
-                                                {{ ucfirst($schedule->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-4 text-gray-500">No scheduled activities for today</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Notifications -->
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Recent Notifications</h3>
-                    <div class="space-y-4">
-                        @forelse($notifications ?? [] as $notification)
-                        <div class="card p-4">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <svg class="w-6 h-6 {{ $notification->type === 'alert' ? 'text-red-500' : 'text-blue-500' }}" 
-                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <!-- Check-ins Today -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="text-muted mb-1">Check-ins Today</h6>
+                                    <h3 class="mb-0">{{ $todayCheckins }}</h3>
                                 </div>
-                                <div class="ml-4">
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                        {{ $notification->message }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </p>
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                    <i class="fas fa-sign-in-alt text-primary"></i>
                                 </div>
                             </div>
                         </div>
-                        @empty
-                        <div class="text-center py-4 text-gray-500">No new notifications</div>
-                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Check-outs Today -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="text-muted mb-1">Check-outs Today</h6>
+                                    <h3 class="mb-0">{{ $todayCheckouts }}</h3>
+                                </div>
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                    <i class="fas fa-sign-out-alt text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Status Summary -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="text-muted mb-1">Room Status</h6>
+                                    <div class="d-flex gap-3">
+                                        <div>
+                                            <small class="text-success d-block">Available</small>
+                                            <span class="h5 mb-0">{{ $availableRooms }}</span>
+                                        </div>
+                                        <div>
+                                            <small class="text-warning d-block">Reserved</small>
+                                            <span class="h5 mb-0">{{ $reservedRooms }}</span>
+                                        </div>
+                                        <div>
+                                            <small class="text-danger d-block">Occupied</small>
+                                            <span class="h5 mb-0">{{ $occupiedRooms }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                                    <i class="fas fa-bed text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <a href="{{ route('receptionist.checkin') }}" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                        New Check-in
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ route('receptionist.checkout') }}" class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Process Check-out
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ route('receptionist.bookings.create') }}" class="btn btn-outline-info w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        New Booking
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ route('receptionist.rooms') }}" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-th-large"></i>
+                                        Room Status
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">Today's Schedule</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="border-0">Time</th>
+                                            <th class="border-0">Guest Name</th>
+                                            <th class="border-0">Room</th>
+                                            <th class="border-0">Action</th>
+                                            <th class="border-0">Status</th>
+                                            <th class="border-0">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($todaySchedule as $schedule)
+                                        <tr>
+                                            <td>{{ $schedule->time }}</td>
+                                            <td>{{ $schedule->guest_name }}</td>
+                                            <td>{{ $schedule->room_number }}</td>
+                                            <td>{{ $schedule->action }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $schedule->status === 'completed' ? 'success' : ($schedule->status === 'pending' ? 'warning' : 'secondary') }}">
+                                                    {{ ucfirst($schedule->status) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    @if($schedule->action === 'Check-in' && $schedule->status === 'approved')
+                                                    <form action="{{ route('receptionist.process-checkin') }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="booking_id" value="{{ $schedule->booking_id }}">
+                                                        <button type="submit" class="btn btn-success btn-sm">
+                                                            <i class="fas fa-check"></i> Process Check-in
+                                                        </button>
+                                                    </form>
+                                                    @endif
+                                                    @if($schedule->action === 'Check-out' && $schedule->status === 'checked_in')
+                                                    <form action="{{ route('receptionist.process-checkout') }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="booking_id" value="{{ $schedule->booking_id }}">
+                                                        <button type="submit" class="btn btn-info btn-sm">
+                                                            <i class="fas fa-sign-out-alt"></i> Process Check-out
+                                                        </button>
+                                                    </form>
+                                                    @endif
+                                                    <a href="{{ route('receptionist.bookings.view', $schedule->booking_id) }}" class="btn btn-outline-secondary btn-sm">
+                                                        <i class="fas fa-info-circle"></i> Details
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4 text-muted">
+                                                <i class="fas fa-calendar-day me-2"></i>
+                                                No scheduled activities for today
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Reservations -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">Pending Reservations</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="border-0">Guest Name</th>
+                                            <th class="border-0">Room</th>
+                                            <th class="border-0">Check-in</th>
+                                            <th class="border-0">Check-out</th>
+                                            <th class="border-0">Total Amount</th>
+                                            <th class="border-0">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($pendingReservations as $booking)
+                                        <tr>
+                                            <td>{{ $booking->user->name }}</td>
+                                            <td>{{ $booking->room->room_number }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($booking->check_out_date)->format('M d, Y') }}</td>
+                                            <td>₱{{ number_format($booking->total_amount, 2) }}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <form action="{{ route('receptionist.bookings.approve', $booking->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success btn-sm me-1">
+                                                            <i class="fas fa-check"></i> Approve
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('receptionist.bookings.reject', $booking->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger btn-sm me-1">
+                                                            <i class="fas fa-times"></i> Reject
+                                                        </button>
+                                                    </form>
+                                                    <a href="{{ route('receptionist.bookings.view', $booking->id) }}" class="btn btn-info btn-sm">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4 text-muted">
+                                                <i class="fas fa-calendar-check me-2"></i>
+                                                No pending reservations
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Notifications -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Notifications</h5>
+                            <button class="btn btn-sm btn-outline-primary">View All</button>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                @forelse($notifications as $notification)
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar {{ $notification->type === 'alert' ? 'bg-danger' : 'bg-info' }} bg-opacity-10 rounded-circle p-2">
+                                                <i class="fas fa-bell {{ $notification->type === 'alert' ? 'text-danger' : 'text-info' }}"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <p class="mb-1">{{ $notification->message }}</p>
+                                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-bell-slash me-2"></i>
+                                    No new notifications
+                                </div>
+                                @endforelse
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    // Add any JavaScript enhancements here
+</script>
+@endpush
 @endsection 
