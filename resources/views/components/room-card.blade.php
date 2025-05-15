@@ -30,13 +30,16 @@
             @endif
         </div>
         <div class="mt-auto">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <span class="h5 mb-0" style="color: var(--accent-color);">₱{{ number_format($room->price_per_night, 2) }}</span>
                     <span class="small text-muted">/night</span>
                 </div>
-                <a href="{{ route('rooms.book', $room) }}" class="btn btn-sm" style="background-color: var(--primary-color); color: white;">Book Now</a>
             </div>
+            <a href="{{ route('rooms.book', $room) }}" class="btn btn-book-now w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;">
+                BOOK NOW
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
         </div>
     </div>
 </div>
@@ -53,5 +56,16 @@
 
 .badge {
     font-weight: 500;
+}
+
+.btn-book-now {
+    transition: all 0.3s ease;
+}
+
+.btn-book-now:hover {
+    background-color: #A7C5BD !important;
+    color: #2E3B4E !important;
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
 }
 </style> 

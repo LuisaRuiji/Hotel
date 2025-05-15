@@ -32,6 +32,40 @@
             @else
                 @include('layouts.customer-navigation')
             @endif
+        @else
+            <!-- Guest Navigation Bar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'Hotel Management') }}
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guestNavbarNav" 
+                            aria-controls="guestNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="guestNavbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/') }}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#rooms">Rooms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#services">Services</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-sm" style="background-color: #A7C5BD; color: #2E3B4E;" href="{{ route('register') }}">Register</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         @endauth
 
         <!-- Main Content -->

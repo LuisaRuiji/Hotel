@@ -27,7 +27,7 @@
                     <div class="carousel-caption d-flex align-items-center justify-content-center h-100">
                         <div>
                             <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Luxurious Comfort</h1>
-                            <p class="lead mb-5 animate__animated animate__fadeInUp animate__delay-1s">Experience world-class amenities and exceptional hospitality.</p>
+                            <p class="lead mb-5 animate__animated animate__fadeInUp animate__delay-1s">Experience world-class Services and exceptional hospitality.</p>
                             <a href="#rooms" class="btn btn-lg px-5 py-3 fw-semibold animate__animated animate__fadeInUp animate__delay-2s" style="background-color: #A7C5BD; color: #2E3B4E; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px;">
                                 View Our Rooms
                             </a>
@@ -142,7 +142,7 @@
         </div>
     </section>
 
-    <section class="py-5" style="background-color: #2E3B4E;">
+    <section id="amenities" class="py-5" style="background-color: #2E3B4E;">
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold text-white">Hotel Amenities</h2>
@@ -209,6 +209,132 @@
         </div>
     </section>
 
+    <!-- Services Section -->
+    <section id="services" class="py-5" style="background-color: #FFFFFF;">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold" style="color: #2E3B4E;">Premium Services</h2>
+                <p class="lead" style="color: #5a687c;">Enhance your stay with our exclusive services.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Spa & Wellness -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Spa & Wellness">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Spa & Wellness</h5>
+                            <p class="card-text">Indulge in relaxing massages, facials, and body treatments at our luxury spa.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,500</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    BOOK SERVICE <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dining & Restaurant -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Dining">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Fine Dining</h5>
+                            <p class="card-text">Experience exquisite cuisine prepared by world-class chefs in our restaurant.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱800</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    RESERVE TABLE <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transportation -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Transportation">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Luxury Transportation</h5>
+                            <p class="card-text">Airport transfers and city tours in our fleet of premium vehicles.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,200</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    BOOK TRANSFER <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Services -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Business Services">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Business Center</h5>
+                            <p class="card-text">Meeting rooms, conference facilities, and business support services.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱2,000</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    RESERVE SPACE <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities & Recreation -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1526485856375-9110812fbf35?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Activities">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Recreation Activities</h5>
+                            <p class="card-text">Guided tours, cooking classes, and local cultural experiences.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,000</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    BOOK ACTIVITY <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laundry -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Laundry">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #2E3B4E;">Laundry & Dry Cleaning</h5>
+                            <p class="card-text">Premium laundry services with express delivery options.</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱500</span>
+                                </div>
+                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                    ORDER SERVICE <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="py-5" style="background-color: #F5F7F6;">
         <div class="container py-4">
             <div class="row align-items-center">
@@ -239,7 +365,7 @@
             <p class="lead mb-4" style="color: #FFFFFF;">
                 We invite you to experience the comfort, luxury, and exceptional service that await you.
             </p>
-            <a href="#booking-bar" class="btn btn-lg px-5 py-3 fw-semibold" style="background-color: #2E3B4E; color: #FFFFFF; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px;">
+            <a href="#rooms" class="btn btn-lg px-5 py-3 fw-semibold" style="background-color: #2E3B4E; color: #FFFFFF; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px;">
                 Book Your Room Now
             </a>
         </div>
@@ -296,6 +422,26 @@
 
     .form-control-lg, .form-select-lg {
         border-radius: 0.5rem; /* softer edges for form fields */
+    }
+
+    .service-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+    
+    .btn-book-service {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-book-service:hover {
+        background-color: #A7C5BD !important;
+        color: #2E3B4E !important;
+        transform: translateY(-2px);
+        box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
     }
 </style>
 @endpush
