@@ -57,7 +57,14 @@ class ServiceRequestController extends Controller
             'status' => 'pending'
         ]);
         
+        // Add the service price to the booking's total_amount
+        $service = Service::find($request->service_id);
+        if ($service) {
+            $booking->total_amount += $service->price;
+            $booking->save();
+        }
+        
         return redirect()->route('dashboard')
-            ->with('success', 'Your service request has been submitted and is pending approval.');
+            ->with('success', 'Your service request has been submitted and the amount has been updated.');
     }
 } 

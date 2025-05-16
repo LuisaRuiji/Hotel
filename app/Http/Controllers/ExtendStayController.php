@@ -12,7 +12,7 @@ class ExtendStayController extends Controller
     public function index()
     {
         $currentBooking = Booking::where('user_id', Auth::id())
-            ->where('status', 'confirmed')
+            ->whereIn('status', ['checked_in', 'confirmed'])
             ->where('check_in_date', '<=', now())
             ->where('check_out_date', '>=', now())
             ->first();
@@ -29,8 +29,9 @@ class ExtendStayController extends Controller
 
         $booking = Booking::findOrFail($request->booking_id);
         
-        // Check if the room is available for the extended period
-        $newCheckOutDate = $booking->check_out_date->addDays($request->additional_nights);
+        // Fix: Cast additional_nights to int and use copy() on check_out_date
+        $additionalNights = (int) $request->additional_nights;
+        $newCheckOutDate = $booking->check_out_date->copy()->addDays($additionalNights);
         
         // Check for conflicting bookings
         $conflictingBookings = Booking::where('room_id', $booking->room_id)
@@ -44,7 +45,7 @@ class ExtendStayController extends Controller
         }
 
         // Calculate additional cost
-        $additionalCost = $booking->room->price_per_night * $request->additional_nights;
+        $additionalCost = $booking->room->price_per_night * $additionalNights;
         
         // Update booking
         $booking->update([

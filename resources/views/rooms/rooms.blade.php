@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.app')
 
 @section('styles')
@@ -64,7 +61,7 @@
                     <tr>
                         <td>101</td>
                         <td>Single</td>
-                        <td>$100</td>
+                        <td>₱100.00</td>
                         <td><span class="badge bg-success">Available</span></td>
                         <td>
                             <button class="btn btn-sm btn-info">Edit</button>

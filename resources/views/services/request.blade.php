@@ -34,7 +34,7 @@
                                             <div class="col-md-6">
                                                 <h6 class="mb-1">{{ $service->name }}</h6>
                                                 <p class="small text-muted mb-0">{{ $service->description }}</p>
-                                                <p class="mb-0">Price: ${{ number_format($service->price, 2) }}</p>
+                                                <p class="mb-0">Price: ₱{{ number_format($service->price, 2) }}</p>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-check d-flex align-items-center">

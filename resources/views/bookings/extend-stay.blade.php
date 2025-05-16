@@ -41,8 +41,12 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div class="form-text">
-                                    Rate per night: ${{ number_format($currentBooking->room->price_per_night, 2) }}
+                                    Rate per night: ₱{{ number_format($currentBooking->room->price_per_night, 2) }}
                                 </div>
+                            </div>
+
+                            <div class="form-text" id="extendTotalFee">
+                                Total extension fee: ₱{{ number_format($currentBooking->room->price_per_night, 2) }}
                             </div>
 
                             @if(session('error'))
@@ -62,4 +66,23 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nightsInput = document.getElementById('additional_nights');
+    const totalFeeDiv = document.getElementById('extendTotalFee');
+    const ratePerNight = {{ $currentBooking->room->price_per_night }};
+
+    function updateTotalFee() {
+        let nights = parseInt(nightsInput.value) || 1;
+        let total = nights * ratePerNight;
+        totalFeeDiv.textContent = `Total extension fee: ₱${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+
+    nightsInput.addEventListener('input', updateTotalFee);
+    updateTotalFee();
+});
+</script>
 @endsection 
