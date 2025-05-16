@@ -1,111 +1,347 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Admin Dashboard</h2>
-                
-                <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div class="card bg-primary/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-primary mb-2">Total Rooms</h3>
-                            <p class="text-3xl font-bold text-primary">{{ $totalRooms ?? '0' }}</p>
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h4 mb-0">Admin Dashboard</h2>
+                    <div class="text-muted">{{ now()->format('l, F j, Y') }}</div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="row g-4 mb-4">
+                    <!-- Total Rooms -->
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Total Rooms</h6>
+                                        <h3 class="mb-0">{{ $totalRooms ?? '0' }}</h3>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                        <i class="fas fa-bed text-primary"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="card bg-success/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-success mb-2">Available Rooms</h3>
-                            <p class="text-3xl font-bold text-success">{{ $availableRooms ?? '0' }}</p>
+
+                    <!-- Available Rooms -->
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Available Rooms</h6>
+                                        <h3 class="mb-0">{{ $availableRooms ?? '0' }}</h3>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                        <i class="fas fa-door-open text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="card bg-warning/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-warning mb-2">Current Bookings</h3>
-                            <p class="text-3xl font-bold text-warning">{{ $currentBookings ?? '0' }}</p>
+
+                    <!-- Current Bookings -->
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Occupied Rooms</h6>
+                                        <h3 class="mb-0">{{ $occupiedRooms ?? '0' }}</h3>
+                                    </div>
+                                    <div class="bg-danger bg-opacity-10 rounded-circle p-3">
+                                        <i class="fas fa-calendar-check text-danger"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="card bg-info/10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-info mb-2">Total Revenue</h3>
-                            <p class="text-3xl font-bold text-info">${{ number_format($totalRevenue ?? 0, 2) }}</p>
+
+                    <!-- Total Revenue -->
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="text-muted mb-1">Total Revenue</h6>
+                                        <h3 class="mb-0">₱{{ number_format($totalRevenue ?? 0, 2) }}</h3>
+                                    </div>
+                                    <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                                        <i class="fas fa-money-bill-wave text-info"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <a href="{{ route('admin.rooms.create') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Add New Room</span>
-                        </a>
-                        
-                        <a href="{{ route('admin.users.create') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Add New Staff</span>
-                        </a>
-                        
-                        <a href="{{ route('admin.reports') }}" class="card hover:shadow-lg transition-shadow p-4 text-center">
-                            <svg class="w-8 h-8 mx-auto mb-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <span class="text-gray-900 dark:text-white font-medium">Generate Reports</span>
-                        </a>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <a href="{{ route('admin.rooms') }}"
+                                            class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="fas fa-bed"></i>
+                                            Manage Rooms
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="{{ route('admin.employees') }}"
+                                            class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="fas fa-users"></i>
+                                            Manage Employees
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="{{ route('admin.users') }}"
+                                            class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="fas fa-user-shield"></i>
+                                            Manage Users
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="{{ route('admin.transactions') }}"
+                                            class="btn btn-outline-info w-100 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="fas fa-receipt"></i>
+                                            View Transactions
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Recent Activity -->
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
-                    <div class="card">
-                        <div class="overflow-x-auto">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Activity</th>
-                                        <th>User</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                <!-- Recent Bookings & Activity -->
+                <div class="row g-4 mb-4">
+                    <!-- Recent Bookings -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Bookings</h5>
+                                <a href="{{ route('admin.transactions') }}" class="btn btn-sm btn-outline-primary">View
+                                    All</a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="border-0">Guest</th>
+                                                <th class="border-0">Room</th>
+                                                <th class="border-0">Check In</th>
+                                                <th class="border-0">Status</th>
+                                                <th class="border-0">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($recentBookings ?? [] as $booking)
+                                                <tr>
+                                                    <td>{{ $booking->guest_name }}</td>
+                                                    <td>{{ $booking->room_number }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d, Y') }}
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-{{ $booking->status === 'completed' ? 'success' : ($booking->status === 'pending' ? 'warning' : 'success') }} text-bg-{{ $booking->status === 'completed' ? 'success' : ($booking->status === 'pending' ? 'warning' : 'danger') }}">
+                                                            {{ ucfirst($booking->status) }}
+
+                                                        </span>
+                                                    </td>
+                                                    <td>₱{{ number_format($booking->total_amount, 2) }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-4 text-muted">
+                                                        <i class="fas fa-calendar-day me-2"></i>
+                                                        No recent bookings
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Recent Activity</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
                                     @forelse($recentActivities ?? [] as $activity)
-                                    <tr>
-                                        <td>{{ $activity->description }}</td>
-                                        <td>{{ $activity->user->name }}</td>
-                                        <td>{{ $activity->created_at->format('M d, Y H:i') }}</td>
-                                        <td>
-                                            <span class="px-2 py-1 text-xs rounded-full 
-                                                {{ $activity->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                                   ($activity->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                                   'bg-red-100 text-red-800') }}">
-                                                {{ ucfirst($activity->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
+                                        <div class="list-group-item border-0 py-3">
+                                            <div class="d-flex">
+                                                <div class="me-3">
+                                                    <div
+                                                        class="avatar avatar-sm bg-{{ $activity->status === 'completed' ? 'success' : ($activity->status === 'pending' ? 'warning' : 'danger') }} bg-opacity-10 rounded-circle">
+                                                        <span
+                                                            class="avatar-text text-{{ $activity->status === 'completed' ? 'success' : ($activity->status === 'pending' ? 'warning' : 'danger') }}">
+                                                            <i
+                                                                class="fas fa-{{ $activity->status === 'completed' ? 'check' : ($activity->status === 'pending' ? 'clock' : 'exclamation') }}"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <p class="mb-1 fw-medium">{{ $activity->description }}</p>
+                                                    <div class="d-flex align-items-center">
+                                                        <small class="text-muted">{{ $activity->user->name }}</small>
+                                                        <span class="mx-2 text-muted">•</span>
+                                                        <small
+                                                            class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="badge bg-{{ $activity->status === 'completed' ? 'success' : ($activity->status === 'pending' ? 'warning' : 'danger') }}">
+                                                        {{ ucfirst($activity->status) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-gray-500">No recent activities</td>
-                                    </tr>
+                                        <div class="text-center py-5 text-muted">
+                                            <i class="fas fa-history fa-2x mb-3"></i>
+                                            <p>No recent activities</p>
+                                        </div>
                                     @endforelse
-                                </tbody>
-                            </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Status Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Room Status Summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <canvas id="roomStatusChart" height="200"></canvas>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="h-100 d-flex flex-column justify-content-center">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="fw-medium">Available</span>
+                                                    <span class="fw-medium text-success">{{ $availableRooms ?? 0 }}</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-success"
+                                                        style="width: {{ ($availableRooms ?? 0) / (($totalRooms ?? 1) ?: 1) * 100 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="fw-medium">Occupied</span>
+                                                    <span class="fw-medium text-danger">{{ $occupiedRooms ?? 0 }}</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width: {{ ($occupiedRooms ?? 0) / (($totalRooms ?? 1) ?: 1) * 100 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="fw-medium">Maintenance</span>
+                                                    <span class="fw-medium text-warning">{{ $maintenanceRooms ?? 0 }}</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-warning"
+                                                        style="width: {{ ($maintenanceRooms ?? 0) / (($totalRooms ?? 1) ?: 1) * 100 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="fw-medium">Reserved</span>
+                                                    <span class="fw-medium text-info">{{ $reservedRooms ?? 0 }}</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-info"
+                                                        style="width: {{ ($reservedRooms ?? 0) / (($totalRooms ?? 1) ?: 1) * 100 }}%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection 
+
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Room status chart
+                const roomStatusChart = document.getElementById('roomStatusChart');
+                if (roomStatusChart) {
+                    new Chart(roomStatusChart, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Available', 'Occupied', 'Maintenance', 'Reserved'],
+                            datasets: [{
+                                data: [
+                                                                                                                                                                                                                                            {{ $availableRooms ?? 0 }},
+                                                                                                                                                                                                                                            {{ $occupiedRooms ?? 0 }},
+                                                                                                                                                                                                                                            {{ $maintenanceRooms ?? 0 }},
+                                    {{ $reservedRooms ?? 0 }}
+                                ],
+                                backgroundColor: [
+                                    'rgba(40, 167, 69, 0.8)',  // success
+                                    'rgba(220, 53, 69, 0.8)',  // danger
+                                    'rgba(255, 193, 7, 0.8)',  // warning
+                                    'rgba(23, 162, 184, 0.8)'  // info
+                                ],
+                                borderColor: [
+                                    'rgba(40, 167, 69, 1)',
+                                    'rgba(220, 53, 69, 1)',
+                                    'rgba(255, 193, 7, 1)',
+                                    'rgba(23, 162, 184, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            cutout: '65%'
+                        }
+                    });
+                }
+            });
+        </script>
+    @endpush
+@endsection

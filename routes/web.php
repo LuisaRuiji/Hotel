@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
     // Admin routes
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/rooms', [AdminController::class, 'rooms'])->name('admin.rooms');
+    Route::get('/admin/employees', [AdminController::class, 'employees'])->name('admin.employees');
+    Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/admin/receptionist', [AdminController::class, 'receptionist'])->name('admin.receptionist');
     Route::get('/admin/services', [AdminController::class, 'services'])->name('admin.services');
 
@@ -67,9 +70,22 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/rooms', [AdminController::class, 'rooms'])->name('admin.rooms');
-Route::get('/admin/receptionist', [AdminController::class, 'receptionist'])->name('admin.receptionist');
-Route::get('/admin/services', [AdminController::class, 'services'])->name('admin.services');
+Route::post('/admin/rooms/store', [AdminController::class, 'storeRoom'])->name('admin.rooms.store');
+Route::put('/admin/rooms/update', [AdminController::class, 'updateRoom'])->name('admin.rooms.update');
+Route::post('/admin/categories/store', [AdminController::class, 'storeCategory'])->name('admin.categories.store');
+
+Route::post('/admin/employees/store', [AdminController::class, 'storeEmployee'])->name('admin.employees.store');
+Route::put('/admin/employees/update', [AdminController::class, 'updateEmployee'])->name('admin.employees.update');
+Route::put('/admin/employees/activate', [AdminController::class, 'activateEmployee'])->name('admin.employees.activate');
+Route::put('/admin/employees/deactivate', [AdminController::class, 'deactivateEmployee'])->name('admin.employees.deactivate');
+
+Route::get('/admin/transactions/{id}/print', [AdminController::class, 'printTransaction'])->name('admin.transactions.print');
+Route::get('/admin/transactions/export/{type}', [AdminController::class, 'exportTransactions'])->name('admin.transactions.export');
+
+Route::post('/admin/users/store', [AdminController::class, 'storeUser'])->name('admin.users.store');
+Route::put('/admin/users/update', [AdminController::class, 'updateUser'])->name('admin.users.update');
+Route::post('/admin/users/reset-password', [AdminController::class, 'resetUserPassword'])->name('admin.users.reset-password');
+Route::put('/admin/users/activate', [AdminController::class, 'activateUser'])->name('admin.users.activate');
+Route::put('/admin/users/deactivate', [AdminController::class, 'deactivateUser'])->name('admin.users.deactivate');
 
 require __DIR__.'/auth.php';

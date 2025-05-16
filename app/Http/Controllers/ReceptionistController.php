@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Booking;
 use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -39,17 +40,17 @@ class ReceptionistController extends Controller
             ->get();
 
         // Get today's schedule
-        $todaySchedule = Booking::where(function($query) use ($today) {
-                $query->whereDate('check_in_date', $today)
-                      ->orWhereDate('check_out_date', $today);
-            })
+        $todaySchedule = Booking::where(function ($query) use ($today) {
+            $query->whereDate('check_in_date', $today)
+                ->orWhereDate('check_out_date', $today);
+        })
             ->whereNotIn('status', ['cancelled'])
             ->with(['user', 'room'])
             ->get()
-            ->map(function($booking) {
+            ->map(function ($booking) {
                 $isCheckIn = Carbon::parse($booking->check_in_date)->format('Y-m-d') === now()->format('Y-m-d');
-                return (object)[
-                    'time' => $isCheckIn 
+                return (object) [
+                    'time' => $isCheckIn
                         ? Carbon::parse($booking->check_in_date)->format('H:i')
                         : Carbon::parse($booking->check_out_date)->format('H:i'),
                     'guest_name' => $booking->user->name ?? 'Guest',
@@ -100,7 +101,7 @@ class ReceptionistController extends Controller
         DB::beginTransaction();
         try {
             $booking = Booking::findOrFail($request->booking_id);
-            
+
             // Check if the room is still available
             $room = Room::findOrFail($booking->room_id);
             if ($room->status !== Room::STATUS_RESERVED) {
@@ -154,7 +155,7 @@ class ReceptionistController extends Controller
         DB::beginTransaction();
         try {
             $booking = Booking::with('room')->findOrFail($request->booking_id);
-            
+
             // Verify booking status
             if ($booking->status !== 'checked_in') {
                 throw new \Exception('Booking must be checked in to process check-out.');
@@ -223,7 +224,7 @@ class ReceptionistController extends Controller
     {
         try {
             $booking = Booking::findOrFail($id);
-            
+
             // Check if the room is still available
             $room = Room::findOrFail($booking->room_id);
             if (!$room->is_available) {
@@ -259,7 +260,7 @@ class ReceptionistController extends Controller
         DB::beginTransaction();
         try {
             $booking = Booking::findOrFail($id);
-            
+
             // Calculate final amount with discount
             $finalAmount = $booking->total_amount;
             if ($request->discount_type) {
@@ -267,17 +268,34 @@ class ReceptionistController extends Controller
                 $finalAmount -= $discountAmount;
             }
 
+            $transaction_id_global = 'TXN' . time() . rand(1000, 9999);
+
             // Create payment record
             $payment = Payment::create([
                 'booking_id' => $booking->id,
                 'amount' => $finalAmount,
                 'payment_method' => $request->payment_method,
                 'status' => 'completed',
-                'transaction_id' => 'TXN' . time() . rand(1000, 9999),
+                'transaction_id' => $transaction_id_global,
                 'card_type' => $request->payment_method === 'credit_card' ? $this->detectCardType($request->card_number) : null,
                 'card_last_four' => $request->payment_method === 'credit_card' ? substr($request->card_number, -4) : null,
                 'card_expiry' => $request->payment_method === 'credit_card' ? $request->card_expiry : null,
                 'notes' => $request->discount_type ? "Applied {$request->discount_type} discount" : null
+            ]);
+
+            $transaction = Transaction::create([
+                'invoice_number' => $payment->transaction_id,
+                'booking_id' => $booking->id,
+                'user_id' => $booking->user->id,
+                'payment_method' => $payment->payment_method,
+                'amount' => $finalAmount,
+                'description' => "Payment for booking #{$booking->id}",
+                'guest_name' => $booking->user->name,
+                'room_number' => $booking->room->room_number,
+                'reference_number' => $transaction_id_global,
+                'status' => 'completed',
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
 
             // Update booking status and payment details
@@ -313,7 +331,7 @@ class ReceptionistController extends Controller
     private function detectCardType($cardNumber)
     {
         $cardNumber = preg_replace('/\D/', '', $cardNumber);
-        
+
         if (preg_match('/^4/', $cardNumber)) {
             return 'Visa';
         } elseif (preg_match('/^5[1-5]/', $cardNumber)) {
@@ -329,7 +347,7 @@ class ReceptionistController extends Controller
     {
         try {
             $booking = Booking::findOrFail($id);
-            
+
             // Update booking status
             $booking->update([
                 'status' => 'cancelled',
@@ -349,23 +367,25 @@ class ReceptionistController extends Controller
         try {
             $room = Room::findOrFail($id);
             $newStatus = $request->status;
-            
+
             // Validate the status
-            if (!in_array($newStatus, [
-                Room::STATUS_AVAILABLE, 
-                Room::STATUS_CLEANING, 
-                Room::STATUS_RESERVED, 
-                Room::STATUS_OCCUPIED
-            ])) {
+            if (
+                !in_array($newStatus, [
+                    Room::STATUS_AVAILABLE,
+                    Room::STATUS_CLEANING,
+                    Room::STATUS_RESERVED,
+                    Room::STATUS_OCCUPIED
+                ])
+            ) {
                 return back()->with('error', 'Invalid room status');
             }
-            
+
             $room->status = $newStatus;
             $room->save();
-            
+
             return back()->with('success', "Room {$room->room_number} status has been updated to " . ucfirst($newStatus));
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update room status: ' . $e->getMessage());
         }
     }
-} 
+}

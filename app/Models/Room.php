@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
 
 class Room extends Model
@@ -15,11 +16,14 @@ class Room extends Model
     public const STATUS_OCCUPIED = 'occupied';
     public const STATUS_RESERVED = 'reserved';
     public const STATUS_CLEANING = 'cleaning';
+    public const STATUS_MAINTENANCE = 'maintenance';
 
     protected $fillable = [
         'room_number',
+        'category_id',
         'type',
         'floor',
+        'price',
         'price_per_night',
         'capacity',
         'description',
@@ -27,6 +31,7 @@ class Room extends Model
         'status',
         'has_view',
         'is_smoking',
+        'image',
         'image_url'
     ];
 
@@ -34,12 +39,18 @@ class Room extends Model
         'amenities' => 'array',
         'has_view' => 'boolean',
         'is_smoking' => 'boolean',
+        'price' => 'decimal:2',
         'price_per_night' => 'decimal:2'
     ];
 
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function currentBooking()
