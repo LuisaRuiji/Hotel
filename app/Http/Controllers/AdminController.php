@@ -21,8 +21,8 @@ class AdminController extends Controller
         $totalRooms = Room::count();
         $availableRooms = Room::where('status', 'available')->count();
         $occupiedRooms = Room::where('status', 'occupied')->count();
-        $maintenanceRooms = Room::where('status', 'maintenance')->count();
-        $reservedRooms = 0; // You can add logic for reserved rooms if you have that status
+        $maintenanceRooms = Room::whereIn('status', ['maintenance', 'cleaning'])->count();
+        $reservedRooms = Room::where('status', 'reserved')->count();
 
         $currentBookings = Booking::whereDate('check_in_date', '<=', now())
             ->whereDate('check_out_date', '>=', now())

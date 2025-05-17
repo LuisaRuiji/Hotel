@@ -40,7 +40,7 @@ class ReceptionistController extends Controller
         $availableRooms = Room::where('status', Room::STATUS_AVAILABLE)->count();
         $occupiedRooms = Room::where('status', Room::STATUS_OCCUPIED)->count();
         $reservedRooms = Room::where('status', Room::STATUS_RESERVED)->count();
-        $cleaningRooms = Room::where('status', Room::STATUS_CLEANING)->count();
+        $maintenanceRooms = Room::whereIn('status', [Room::STATUS_CLEANING, Room::STATUS_MAINTENANCE])->count();
 
         // Get pending reservations
         $pendingReservations = Booking::where('status', 'pending')
@@ -80,7 +80,7 @@ class ReceptionistController extends Controller
             'availableRooms',
             'occupiedRooms',
             'reservedRooms',
-            'cleaningRooms',
+            'maintenanceRooms',
             'todaySchedule',
             'notifications',
             'pendingReservations'
@@ -220,7 +220,7 @@ class ReceptionistController extends Controller
         $availableRooms = Room::where('status', Room::STATUS_AVAILABLE)->count();
         $occupiedRooms = Room::where('status', Room::STATUS_OCCUPIED)->count();
         $reservedRooms = Room::where('status', Room::STATUS_RESERVED)->count();
-        $cleaningRooms = Room::where('status', Room::STATUS_CLEANING)->count();
+        $cleaningRooms = Room::whereIn('status', [Room::STATUS_CLEANING, Room::STATUS_MAINTENANCE])->count();
 
         return view('Dashboards.Receptionist.rooms', compact(
             'rooms',

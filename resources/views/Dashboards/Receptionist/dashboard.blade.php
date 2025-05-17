@@ -66,6 +66,10 @@
                                             <small class="text-danger d-block">Occupied</small>
                                             <span class="h5 mb-0">{{ $occupiedRooms }}</span>
                                         </div>
+                                        <div>
+                                            <small class="text-info d-block">Maintenance</small>
+                                            <span class="h5 mb-0">{{ $maintenanceRooms }}</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="bg-info bg-opacity-10 rounded-circle p-3">
