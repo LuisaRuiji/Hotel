@@ -160,6 +160,35 @@
                                                                         <small class="text-muted">Duration: {{ $service->duration }}</small>
                                                                     </label>
                                                                 </div>
+                                                                
+                                                                <!-- Schedule Service moved here -->
+                                                                <div class="mt-2 service-schedule ms-4" style="display: none;">
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <small class="text-muted">Schedule Service:</small>
+                                                                    </div>
+                                                                    <div class="d-flex gap-2">
+                                                                        <div>
+                                                                            <label for="service_date_{{ $service->id }}" class="form-label small text-muted">Date</label>
+                                                                            <input type="date" 
+                                                                                   id="service_date_{{ $service->id }}"
+                                                                                   class="form-select form-select-sm service-date" 
+                                                                                   name="service_date[{{ $service->id }}]">
+                                                                        </div>
+                                                                        <div>
+                                                                            <label for="service_time_{{ $service->id }}" class="form-label small text-muted">Time</label>
+                                                                            <select id="service_time_{{ $service->id }}"
+                                                                                    class="form-select form-select-sm service-time" 
+                                                                                    name="service_time[{{ $service->id }}]">
+                                                                                <option value="08:00:00">8:00 AM</option>
+                                                                                <option value="10:00:00">10:00 AM</option>
+                                                                                <option value="12:00:00" selected>12:00 PM</option>
+                                                                                <option value="14:00:00">2:00 PM</option>
+                                                                                <option value="16:00:00">4:00 PM</option>
+                                                                                <option value="18:00:00">6:00 PM</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="text-end">
                                                                 <div class="h6 mb-0">₱{{ number_format($service->price, 2) }}</div>
@@ -224,8 +253,7 @@
                             <!-- Submit Button -->
                             <div class="col-12">
                                 <button type="submit" 
-                                        class="btn btn-lg w-100" 
-                                        style="background-color: var(--accent-color); color: var(--primary-color);"
+                                        class="btn btn-lg w-100 confirm-booking-btn"
                                         onclick="return checkAuthentication(event)">
                                     Confirm Booking
                                 </button>
@@ -267,6 +295,28 @@
 }
 .is-invalid ~ .invalid-feedback {
     display: block;
+}
+
+/* Confirm Button Styling */
+.confirm-booking-btn {
+    background-color: #2E3B4E;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.confirm-booking-btn:hover {
+    background-color: #3a4b63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+.confirm-booking-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 </style>
 @endpush
@@ -322,16 +372,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const serviceCheckboxes = document.querySelectorAll('.service-checkbox');
     const serviceQuantitySelects = document.querySelectorAll('.service-quantity');
 
-    // Enable/disable quantity select based on checkbox
-    serviceCheckboxes.forEach(checkbox => {
+    // Handle services selection
+    serviceCheckboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
-            const quantitySelect = this.closest('.d-flex').querySelector('.service-quantity');
+            // Get associated elements
+            const parent = this.closest('.d-flex');
+            const quantitySelect = parent.querySelector('.service-quantity');
+            const scheduleSection = parent.querySelector('.service-schedule');
+            const dateInput = parent.querySelector('.service-date');
+            const timeSelect = parent.querySelector('.service-time');
+            
+            // Enable/disable quantity based on checkbox
             if (quantitySelect) {
                 quantitySelect.disabled = !this.checked;
             }
+            
+            // Show/hide and enable/disable schedule section
+            if (scheduleSection) {
+                scheduleSection.style.display = this.checked ? 'block' : 'none';
+            }
+            
+            // Enable/disable date and time inputs
+            if (dateInput) {
+                dateInput.disabled = !this.checked;
+                if (this.checked) {
+                    updateServiceDateBounds(dateInput);
+                }
+            }
+            
+            if (timeSelect) {
+                timeSelect.disabled = !this.checked;
+            }
+            
             updatePriceSummary();
         });
     });
+
+    // Function to update service date bounds based on check-in/out dates
+    function updateServiceDateBounds(dateInput) {
+        if (checkInInput.value && checkOutInput.value) {
+            // Set min to check-in date
+            dateInput.min = checkInInput.value;
+            // Set max to check-out date (or day before checkout)
+            dateInput.max = checkOutInput.value;
+            // Default to check-in date
+            dateInput.value = checkInInput.value;
+        }
+    }
+
+    // Update all service dates when check-in/out changes
+    function updateAllServiceDates() {
+        document.querySelectorAll('.service-date').forEach(dateInput => {
+            if (!dateInput.disabled) {
+                updateServiceDateBounds(dateInput);
+            }
+        });
+    }
 
     // Update price when quantity changes
     serviceQuantitySelects.forEach(select => {
@@ -403,9 +499,13 @@ document.addEventListener('DOMContentLoaded', function() {
     checkInInput.addEventListener('change', function() {
         checkOutInput.min = this.value;
         updatePriceSummary();
+        updateAllServiceDates();
     });
 
-    checkOutInput.addEventListener('change', updatePriceSummary);
+    checkOutInput.addEventListener('change', function() {
+        updatePriceSummary();
+        updateAllServiceDates();
+    });
     
     // Initialize the price calculation
     if (checkInInput.value && checkOutInput.value) {

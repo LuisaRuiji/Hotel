@@ -20,6 +20,24 @@ class RoomController extends Controller
         if (!auth()->check()) {
             // Store room info in session for after login
             session(['intended_room_booking' => $room->id]);
+            
+            // If it's an AJAX request, return JSON response
+            if (request()->ajax() || request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please log in to continue with your booking.',
+                    'login_required' => true
+                ]);
+            }
+            
+            // If there's a referer header, the user likely clicked a link on our site
+            // Add a session message to inform that the login modal should appear after redirect
+            if (request()->headers->has('referer')) {
+                session()->flash('show_login_modal', true);
+                session()->flash('message', 'Please log in to continue with your booking.');
+            }
+            
+            // For regular requests with no referer, redirect to login page
             return redirect()->route('login')
                 ->with('message', 'Please log in to continue with your booking.');
         }
@@ -51,7 +69,11 @@ class RoomController extends Controller
                 'services' => 'nullable|array',
                 'services.*' => 'exists:services,id',
                 'service_quantity' => 'nullable|array',
-                'service_quantity.*' => 'integer|min:1|max:5'
+                'service_quantity.*' => 'integer|min:1|max:5',
+                'service_time' => 'nullable|array',
+                'service_time.*' => 'string',
+                'service_date' => 'nullable|array',
+                'service_date.*' => 'date|after_or_equal:check_in|before_or_equal:check_out'
             ]);
 
             // Check if room is available for these dates
@@ -134,9 +156,16 @@ class RoomController extends Controller
 
             // Attach services to booking
             foreach ($selectedServices as $service) {
+                // Get the selected time or default to noon
+                $serviceTime = $request->input("service_time.{$service['service_id']}", '12:00:00');
+                // Get the selected date or default to check-in date
+                $serviceDate = $request->input("service_date.{$service['service_id']}", $checkIn->format('Y-m-d'));
+                // Combine date with selected time
+                $scheduledAt = $serviceDate . ' ' . $serviceTime;
+                
                 $booking->services()->attach($service['service_id'], [
                     'quantity' => $service['quantity'],
-                    'scheduled_at' => $request->check_in,
+                    'scheduled_at' => $scheduledAt,
                     'notes' => null
                 ]);
             }

@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,7 +23,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse|JsonResponse
     {
         $request->authenticate();
 
@@ -30,14 +31,28 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
         
-        // Check if there was an intended room booking
-        if ($roomId = session('intended_room_booking')) {
+        // Check if there was an intended room booking in session or request
+        $roomId = session('intended_room_booking') ?? $request->input('intended_room_booking');
+        
+        if ($roomId) {
+            // Clear from session if it's there
             session()->forget('intended_room_booking');
-            return redirect()->route('customer.book-room', ['room' => $roomId]);
+            $redirectUrl = route('customer.book-room', ['room' => $roomId]);
+        } else {
+        // Role-based redirection
+            $redirectUrl = $this->getRedirectUrl($user);
         }
         
-        // Role-based redirection
-        return redirect()->intended($this->getRedirectUrl($user));
+        // If it's an AJAX request, return JSON
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'redirect' => $redirectUrl
+            ]);
+        }
+        
+        // For regular form submissions, redirect as usual
+        return redirect()->intended($redirectUrl);
     }
 
     /**

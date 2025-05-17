@@ -109,6 +109,45 @@
                         </div>
                         @endif
 
+                        <!-- Service Requests -->
+                        @php
+                            $serviceRequests = App\Models\ServiceRequest::where('booking_id', $booking->id)->get();
+                        @endphp
+                        @if($serviceRequests->count() > 0)
+                        <div class="col-12">
+                            <hr>
+                            <h6 class="text-muted mb-3">Service Requests During Stay</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Requested Date</th>
+                                            <th>Requested Time</th>
+                                            <th>Status</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($serviceRequests as $request)
+                                        <tr>
+                                            <td>{{ $request->service->name }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($request->requested_date)->format('M d, Y') }}</td>
+                                            <td>{{ $request->requested_time }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $request->status === 'completed' ? 'success' : ($request->status === 'pending' ? 'warning' : 'info') }}">
+                                                    {{ ucfirst($request->status) }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $request->notes ?? '-' }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @endif
+
                         <!-- Action Buttons -->
                         <div class="col-12">
                             <hr>

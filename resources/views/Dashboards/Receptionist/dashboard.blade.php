@@ -133,7 +133,6 @@
                                             <th class="border-0">Room</th>
                                             <th class="border-0">Action</th>
                                             <th class="border-0">Status</th>
-                                            <th class="border-0">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -148,35 +147,10 @@
                                                     {{ ucfirst($schedule->status) }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <div class="btn-group btn-group-sm">
-                                                    @if($schedule->action === 'Check-in' && $schedule->status === 'approved')
-                                                    <form action="{{ route('receptionist.process-checkin') }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <input type="hidden" name="booking_id" value="{{ $schedule->booking_id }}">
-                                                        <button type="submit" class="btn btn-success btn-sm">
-                                                            <i class="fas fa-check"></i> Process Check-in
-                                                        </button>
-                                                    </form>
-                                                    @endif
-                                                    @if($schedule->action === 'Check-out' && $schedule->status === 'checked_in')
-                                                    <form action="{{ route('receptionist.process-checkout') }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <input type="hidden" name="booking_id" value="{{ $schedule->booking_id }}">
-                                                        <button type="submit" class="btn btn-info btn-sm">
-                                                            <i class="fas fa-sign-out-alt"></i> Process Check-out
-                                                        </button>
-                                                    </form>
-                                                    @endif
-                                                    <a href="{{ route('receptionist.bookings.view', $schedule->booking_id) }}" class="btn btn-outline-secondary btn-sm">
-                                                        <i class="fas fa-info-circle"></i> Details
-                                                    </a>
-                                                </div>
-                                            </td>
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="6" class="text-center py-4 text-muted">
+                                            <td colspan="5" class="text-center py-4 text-muted">
                                                 <i class="fas fa-calendar-day me-2"></i>
                                                 No scheduled activities for today
                                             </td>

@@ -36,7 +36,11 @@
                     <span class="small text-muted">/night</span>
                 </div>
             </div>
-            <a href="{{ route('rooms.book', $room) }}" class="btn btn-book-now w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;">
+            <a href="javascript:void(0);" 
+               class="btn btn-book-now w-100 py-2 book-now-btn" 
+               data-room-id="{{ $room->id }}"
+               data-book-url="{{ route('rooms.book', $room) }}"
+               style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;">
                 BOOK NOW
                 <i class="fas fa-arrow-right ms-2"></i>
             </a>

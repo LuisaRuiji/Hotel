@@ -70,8 +70,10 @@
                             <span class="badge" style="background-color: var(--accent-color);">Room {{ $room->room_number }}</span>
                         </div>
 
-                        <a href="{{ route('rooms.book', $room) }}" 
-                           class="btn btn-lg w-100" 
+                        <a href="javascript:void(0);" 
+                           class="btn btn-lg w-100 book-now-btn" 
+                           data-room-id="{{ $room->id }}"
+                           data-book-url="{{ route('rooms.book', $room) }}"
                            style="background-color: var(--primary-color); color: white;">
                             Book Now
                         </a>

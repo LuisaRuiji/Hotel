@@ -99,6 +99,50 @@
                     </div>
                 </div>
             </div>
+
+            @if($futureApproved->count())
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Future Approved Reservations</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="border-0">Booking ID</th>
+                                    <th class="border-0">Guest Name</th>
+                                    <th class="border-0">Room</th>
+                                    <th class="border-0">Check-in Date</th>
+                                    <th class="border-0">Length of Stay</th>
+                                    <th class="border-0">Status</th>
+                                    <th class="border-0">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($futureApproved as $booking)
+                                <tr>
+                                    <td>#{{ $booking->id }}</td>
+                                    <td>{{ $booking->user->name }}</td>
+                                    <td>Room {{ $booking->room->room_number }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d, Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($booking->check_in_date)->diffInDays($booking->check_out_date) }} nights</td>
+                                    <td>
+                                        <span class="badge bg-info">Upcoming</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('receptionist.bookings.view', $booking->id) }}" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </div>

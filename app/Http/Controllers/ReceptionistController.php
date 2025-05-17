@@ -22,10 +22,19 @@ class ReceptionistController extends Controller
             ->where('status', 'pending')
             ->count();
 
-        // Get today's check-outs
-        $todayCheckouts = Booking::whereDate('check_out_date', $today)
-            ->where('status', 'checked_in')
-            ->count();
+        // Get today's check-outs - include both scheduled and actual checkouts
+        $todayCheckouts = Booking::where(function($query) use ($today) {
+            // Include bookings with scheduled checkout today
+            $query->whereDate('check_out_date', $today)
+                  ->whereIn('status', ['checked_in', 'completed']);
+        })
+        ->orWhere(function($query) use ($today) {
+            // Include bookings actually checked out today
+            $query->whereDate('checked_out_at', $today)
+                  ->where('status', 'completed');
+        })
+        ->distinct()
+        ->count();
 
         // Get room counts by status
         $availableRooms = Room::where('status', Room::STATUS_AVAILABLE)->count();
@@ -87,7 +96,14 @@ class ReceptionistController extends Controller
             ->orderBy('check_in_date')
             ->get();
 
-        return view('Dashboards.Receptionist.checkin', compact('pendingCheckins'));
+        // New: Future approved reservations
+        $futureApproved = Booking::where('status', 'approved')
+            ->whereDate('check_in_date', '>', now())
+            ->with(['user', 'room'])
+            ->orderBy('check_in_date')
+            ->get();
+
+        return view('Dashboards.Receptionist.checkin', compact('pendingCheckins', 'futureApproved'));
     }
 
     public function processCheckin(Request $request)

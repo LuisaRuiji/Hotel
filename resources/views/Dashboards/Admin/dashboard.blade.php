@@ -90,28 +90,21 @@
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <a href="{{ route('admin.rooms') }}"
                                             class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
                                             <i class="fas fa-bed"></i>
                                             Manage Rooms
                                         </a>
                                     </div>
-                                    <div class="col-md-3">
-                                        <a href="{{ route('admin.employees') }}"
-                                            class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center gap-2">
-                                            <i class="fas fa-users"></i>
-                                            Manage Employees
-                                        </a>
-                                    </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <a href="{{ route('admin.users') }}"
                                             class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2">
                                             <i class="fas fa-user-shield"></i>
                                             Manage Users
                                         </a>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <a href="{{ route('admin.transactions') }}"
                                             class="btn btn-outline-info w-100 d-flex align-items-center justify-content-center gap-2">
                                             <i class="fas fa-receipt"></i>

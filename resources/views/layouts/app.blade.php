@@ -55,12 +55,12 @@
                                 <a class="nav-link" href="#services">Services</a>
                             </li>
                         </ul>
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        <ul class="navbar-nav ms-auto d-flex align-items-center">
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-secondary" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-sm" style="background-color: #A7C5BD; color: #2E3B4E;" href="{{ route('register') }}">Register</a>
+                                <a class="btn btn-primary" href="{{ route('register') }}">Register</a>
                             </li>
                         </ul>
                     </div>
@@ -73,6 +73,11 @@
             @yield('content')
         </main>
     </div>
+
+    @auth
+    @else
+        @include('components.login-modal')
+    @endauth
 
     @stack('scripts')
 
@@ -97,6 +102,46 @@
                 target.classList.remove('htmx-loading');
             }
         });
+
+        // Show login modal if redirected with show_login_modal flag
+        @if(session('show_login_modal'))
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+        @endif
+
+        // Handle Book Now buttons for guest users
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all Book Now buttons at page load
+            const bookButtons = document.querySelectorAll('.book-now-btn');
+            
+            // Add click event listeners to each button
+            bookButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    @auth
+                        // If user is logged in, go to the book URL
+                        const bookUrl = this.getAttribute('data-book-url');
+                        if (bookUrl) {
+                            window.location.href = bookUrl;
+                        }
+                    @else
+                        // If user is not logged in, prevent default and show login modal
+                        e.preventDefault();
+                        
+                        // Store the room ID for after login
+                        const roomId = this.getAttribute('data-room-id');
+                        if (roomId) {
+                            sessionStorage.setItem('intended_room_booking', roomId);
+                        }
+                        
+                        // Show login modal
+                        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                        loginModal.show();
+                    @endauth
+                });
+            });
+        });
     </script>
 
     <style>
@@ -116,6 +161,29 @@
         @keyframes fade-in {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+        
+        /* Custom navbar styles */
+        .navbar .btn-primary {
+            background-color: #A7C5BD;
+            border-color: #A7C5BD;
+            color: #2E3B4E;
+        }
+        
+        .navbar .btn-primary:hover {
+            background-color: #96b5ad;
+            border-color: #96b5ad;
+            color: #2E3B4E;
+        }
+        
+        .navbar .btn-outline-secondary {
+            color: #2E3B4E;
+            border-color: #d1d1d1;
+        }
+        
+        .navbar .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            color: #2E3B4E;
         }
     </style>
 </body>
