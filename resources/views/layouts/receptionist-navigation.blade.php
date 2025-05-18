@@ -7,36 +7,43 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('receptionist.dashboard') ? 'active' : '' }}" href="{{ route('receptionist.dashboard') }}">
+                    <a class="nav-link {{ request()->routeIs('receptionist.dashboard') ? 'active' : '' }}"
+                        href="{{ route('receptionist.dashboard') }}">
                         <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('receptionist.rooms') ? 'active' : '' }}" href="{{ route('receptionist.rooms') }}">
+                    <a class="nav-link {{ request()->routeIs('receptionist.rooms') ? 'active' : '' }}"
+                        href="{{ route('receptionist.rooms') }}">
                         <i class="fas fa-bed me-2"></i>Rooms
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('receptionist.checkin') ? 'active' : '' }}" href="{{ route('receptionist.checkin') }}">
+                    <a class="nav-link {{ request()->routeIs('receptionist.checkin') ? 'active' : '' }}"
+                        href="{{ route('receptionist.checkin') }}">
                         <i class="fas fa-sign-in-alt me-2"></i>Check-in
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('receptionist.checkout') ? 'active' : '' }}" href="{{ route('receptionist.checkout') }}">
+                    <a class="nav-link {{ request()->routeIs('receptionist.checkout') ? 'active' : '' }}"
+                        href="{{ route('receptionist.checkout') }}">
                         <i class="fas fa-sign-out-alt me-2"></i>Check-out
                     </a>
                 </li>
             </ul>
             <div class="d-flex align-items-center gap-3">
                 <div class="dropdown">
-                    <button class="btn btn-link text-dark text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-link text-dark text-decoration-none dropdown-toggle" type="button"
+                        id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle me-2"></i>{{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="fas fa-user-cog me-2"></i>Profile Settings
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
+                                <i class="fas fa-user-cog me-2"></i>Profile Settings
+                            </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -53,27 +60,31 @@
 </nav>
 
 @push('styles')
-<style>
-    .navbar {
-        background-color: #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    <style>
+        a.nav-link {
+            color: white;
+        }
 
-    .nav-link.active {
-        color: var(--accent-color) !important;
-        font-weight: 600;
-    }
-    
-    .nav-link:hover {
-        color: var(--accent-color) !important;
-    }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .dropdown-item:hover {
-        background-color: var(--light-bg);
-    }
+        .nav-link.active {
+            color: var(--accent-color) !important;
+            font-weight: 600;
+        }
 
-    .dropdown-item.text-danger:hover {
-        background-color: #fee2e2;
-    }
-</style>
-@endpush 
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--light-bg);
+        }
+
+        .dropdown-item.text-danger:hover {
+            background-color: #fee2e2;
+        }
+    </style>
+@endpush

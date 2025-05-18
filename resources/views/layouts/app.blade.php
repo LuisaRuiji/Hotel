@@ -34,11 +34,14 @@
             @endif
         @else
             <!-- Guest Navigation Bar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background: linear-gradient(90deg, #1E3A5F 0%, #3B82F6 50%, #14B8A6 100%); min-height: 80px; padding-top: 1rem; padding-bottom: 1rem;">
                 <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Hotel Management') }}
-                    </a>
+                    <div class="navbar-brand-wrapper position-relative d-flex align-items-center" style="height: 64px;">
+                        <div class="logo-bg position-absolute top-50 start-0 translate-middle-y" style="width: 100px; height: 80px; z-index: 1;"></div>
+                        <div class="d-flex align-items-center justify-content-center position-relative" style="z-index: 2; height: 64px;">
+                            <img src="/images/logo-only.png" alt="Hotel Logo" style="height: 80px; width: 150px;">
+                        </div>
+                    </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guestNavbarNav" 
                             aria-controls="guestNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -46,21 +49,21 @@
                     <div class="collapse navbar-collapse" id="guestNavbarNav">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/') }}">Home</a>
+                                <a class="nav-link nav-link-custom" href="{{ url('/') }}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#rooms">Rooms</a>
+                                <a class="nav-link nav-link-custom" href="#rooms">Rooms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#services">Services</a>
+                                <a class="nav-link nav-link-custom" href="#services">Services</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav ms-auto d-flex align-items-center">
                             <li class="nav-item me-2">
-                                <a class="btn btn-outline-secondary" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                                <a class="btn btn-outline-custom" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-primary" href="{{ route('register') }}">Register</a>
+                                <a class="btn btn-primary-custom" href="{{ route('register') }}">Register</a>
                             </li>
                         </ul>
                     </div>
@@ -145,9 +148,107 @@
     </script>
 
     <style>
+        :root {
+            --primary: #D946EF;
+            --secondary: #3B82F6;
+            --dark: #1E3A5F;
+            --accent: #5EEAD4;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background: linear-gradient(120deg, #F8FAFC 70%, #E0E7EF 100%);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(90deg, #1E3A5F 0%, #3B82F6 50%, #14B8A6 100%) !important;
+            min-height: 80px;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+        }
+
+        .navbar-brand-wrapper {
+            min-width: 90px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .navbar-brand img {
+            height: 64px !important;
+            width: auto;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .nav-link-custom {
+            color: #fff !important;
+            font-size: 1.15rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+            background: none;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: #D946EF !important;
+            background: rgba(217, 70, 239, 0.08);
+        }
+
+        .btn-primary-custom {
+            background-color: #5EEAD4;
+            border-color: #5EEAD4;
+            color: #1E3A5F;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: var(--transition);
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #D946EF;
+            border-color: #D946EF;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(217, 70, 239, 0.15);
+        }
+
+        .btn-outline-custom {
+            color: #1E3A5F;
+            border: 2px solid #5EEAD4;
+            background: transparent;
+            border-radius: 8px;
+            transition: var(--transition);
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-outline-custom:hover {
+            background-color: #5EEAD4;
+            color: #1E3A5F;
+            box-shadow: 0 4px 12px rgba(94, 234, 212, 0.15);
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        /* Loading States */
         .htmx-loading {
             opacity: 0.5;
-            transition: opacity 200ms ease-in;
+            transition: opacity 300ms ease-in;
         }
         
         .htmx-settling {
@@ -155,35 +256,102 @@
         }
         
         .htmx-request {
-            animation: fade-in 200ms ease-in;
+            animation: fade-in 300ms ease-in;
         }
-        
-        @keyframes fade-in {
+
+        /* Animations */
+        @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
-        /* Custom navbar styles */
-        .navbar .btn-primary {
-            background-color: #A7C5BD;
-            border-color: #A7C5BD;
-            color: #2E3B4E;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .navbar .btn-primary:hover {
-            background-color: #96b5ad;
-            border-color: #96b5ad;
-            color: #2E3B4E;
+
+        /* Card Hover Effects */
+        .card {
+            transition: var(--transition);
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        .navbar .btn-outline-secondary {
-            color: #2E3B4E;
-            border-color: #d1d1d1;
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
-        
-        .navbar .btn-outline-secondary:hover {
-            background-color: #f8f9fa;
-            color: #2E3B4E;
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Premium Services Section */
+        #services .section-header-accent {
+            width: 60px;
+            height: 4px;
+            margin: 0.5rem auto 2rem auto;
+            background: linear-gradient(90deg, #D946EF 0%, #5EEAD4 100%);
+            border-radius: 2px;
+        }
+        #services .card {
+            border-radius: 18px;
+            border-top: 4px solid #D946EF;
+            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+            box-shadow: 0 2px 12px rgba(30,58,95,0.07);
+        }
+        #services .card:hover {
+            box-shadow: 0 8px 32px rgba(30,58,95,0.18);
+            border-top: 4px solid #5EEAD4;
+            transform: translateY(-8px) scale(1.03);
+        }
+        #services .card-title {
+            font-weight: 700;
+            color: #1E3A5F;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        #services .badge {
+            border-radius: 999px;
+            background: linear-gradient(90deg, #D946EF 0%, #5EEAD4 100%);
+            color: #fff !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.4em 1em;
+        }
+        #services .btn-book-service {
+            background: linear-gradient(90deg, #3B82F6 0%, #D946EF 100%);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        #services .btn-book-service:hover {
+            background: linear-gradient(90deg, #D946EF 0%, #5EEAD4 100%);
+            color: #fff;
+            transform: translateY(-2px) scale(1.03);
         }
     </style>
 </body>

@@ -109,8 +109,12 @@
             
             @if(isset($rooms) && count($rooms) > 0)
                 @foreach($rooms as $type => $typeRooms)
-                    <div class="mb-5">
-                        <h3 class="h2 mb-4 fw-light" style="color: #2E3B4E; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.5rem;">{{ $type }}</h3>
+                    <div class="mb-5 room-section" style="background: linear-gradient(90deg, #F8FAFC 80%, #E0E7EF 100%); border-radius: 18px; padding: 2.5rem 1.5rem 2rem 1.5rem; margin-bottom: 3rem;">
+                        <div class="d-flex align-items-center mb-2" style="gap: 0.75rem;">
+                            <i class="fas fa-bed" style="color: #D946EF; font-size: 2rem;"></i>
+                            <h2 class="h1 mb-0 fw-bold room-section-title" style="color: #1E3A5F; font-size: 2.2rem; letter-spacing: 0.5px;">{{ $type }}</h2>
+                        </div>
+                        <div style="height: 4px; width: 80px; background: linear-gradient(90deg, #D946EF 0%, #5EEAD4 100%); border-radius: 2px; margin-bottom: 2.2rem;"></div>
                         <div class="row g-4 g-lg-5">
                             @foreach($typeRooms as $room)
                                 <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
@@ -142,67 +146,67 @@
         </div>
     </section>
 
-    <section id="amenities" class="py-5" style="background-color: #2E3B4E;">
+    <section id="amenities" class="py-5" style="background-color: #1E3A5F;">
         <div class="container py-4">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold text-white">Hotel Amenities</h2>
-                <p class="lead" style="color: #A7C5BD;">Everything you need for a perfect stay.</p>
+                <h2 class="display-5 fw-bold" style="color: #5EEAD4;">Hotel Amenities</h2>
+                <p class="lead" style="color: #fff;">Everything you need for a perfect stay.</p>
             </div>
             <div class="row g-4 text-center">
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-wifi fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Free High-Speed WiFi</h4>
-                        <p class="small" style="color: #ced4da;">Stay connected throughout the hotel.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-wifi fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Free High-Speed WiFi</h4>
+                        <p class="small" style="color: #fff;">Stay connected throughout the hotel.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-concierge-bell fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">24/7 Front Desk</h4>
-                        <p class="small" style="color: #ced4da;">Always here to assist you.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-concierge-bell fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">24/7 Front Desk</h4>
+                        <p class="small" style="color: #fff;">Always here to assist you.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-parking fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Secure Parking</h4>
-                        <p class="small" style="color: #ced4da;">Hassle-free parking on-site.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-parking fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Secure Parking</h4>
+                        <p class="small" style="color: #fff;">Hassle-free parking on-site.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-utensils fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">On-site Restaurant</h4>
-                        <p class="small" style="color: #ced4da;">Delicious dining options available.</p>
-                    </div>
-                </div>
-                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-swimmer fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Swimming Pool</h4>
-                        <p class="small" style="color: #ced4da;">Relax and unwind by the pool.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-utensils fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">On-site Restaurant</h4>
+                        <p class="small" style="color: #fff;">Delicious dining options available.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-dumbbell fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Fitness Center</h4>
-                        <p class="small" style="color: #ced4da;">Stay active during your stay.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-swimmer fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Swimming Pool</h4>
+                        <p class="small" style="color: #fff;">Relax and unwind by the pool.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-coffee fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Daily Housekeeping</h4>
-                        <p class="small" style="color: #ced4da;">Clean and fresh rooms daily.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-dumbbell fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Fitness Center</h4>
+                        <p class="small" style="color: #fff;">Stay active during your stay.</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="p-3">
-                        <i class="fas fa-shield-alt fa-3x mb-3" style="color: #A7C5BD;"></i>
-                        <h4 class="h5 text-white mb-2">Enhanced Safety</h4>
-                        <p class="small" style="color: #ced4da;">Your safety is our priority.</p>
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-coffee fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Daily Housekeeping</h4>
+                        <p class="small" style="color: #fff;">Clean and fresh rooms daily.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3 amenity-card" style="background: rgba(255,255,255,0.07); border-radius: 14px; border-bottom: 3px solid #D946EF; transition: box-shadow 0.3s;">
+                        <i class="fas fa-shield-alt fa-3x mb-3" style="color: #5EEAD4; text-shadow: 0 2px 8px #D946EF44;"></i>
+                        <h4 class="h5 mb-2" style="color: #fff;">Enhanced Safety</h4>
+                        <p class="small" style="color: #fff;">Your safety is our priority.</p>
                     </div>
                 </div>
             </div>
@@ -214,22 +218,26 @@
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold" style="color: #2E3B4E;">Premium Services</h2>
+                <div class="section-header-accent"></div>
                 <p class="lead" style="color: #5a687c;">Enhance your stay with our exclusive services.</p>
             </div>
 
             <div class="row g-4">
                 <!-- Spa & Wellness -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Spa & Wellness">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Spa & Wellness</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Spa & Wellness" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-spa" style="color: #D946EF;"></i> Spa & Wellness</h5>
                             <p class="card-text">Indulge in relaxing massages, facials, and body treatments at our luxury spa.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,500</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱1,500.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     BOOK SERVICE <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -239,16 +247,19 @@
 
                 <!-- Dining & Restaurant -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Dining">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Fine Dining</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Dining" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-utensils" style="color: #3B82F6;"></i> Fine Dining</h5>
                             <p class="card-text">Experience exquisite cuisine prepared by world-class chefs in our restaurant.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱800</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱800.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     RESERVE TABLE <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -258,16 +269,19 @@
 
                 <!-- Transportation -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Transportation">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Luxury Transportation</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Transportation" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-car" style="color: #5EEAD4;"></i> Luxury Transportation</h5>
                             <p class="card-text">Airport transfers and city tours in our fleet of premium vehicles.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,200</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱1,200.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     BOOK TRANSFER <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -277,16 +291,19 @@
 
                 <!-- Business Services -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Business Services">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Business Center</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Business Services" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-briefcase" style="color: #1E3A5F;"></i> Business Center</h5>
                             <p class="card-text">Meeting rooms, conference facilities, and business support services.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱2,000</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱2,000.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     RESERVE SPACE <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -296,16 +313,19 @@
 
                 <!-- Activities & Recreation -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1526485856375-9110812fbf35?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Activities">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Recreation Activities</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1526485856375-9110812fbf35?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Activities" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-hiking" style="color: #3B82F6;"></i> Recreation Activities</h5>
                             <p class="card-text">Guided tours, cooking classes, and local cultural experiences.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱1,000</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱1,000.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     BOOK ACTIVITY <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -315,16 +335,19 @@
 
                 <!-- Laundry -->
                 <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm service-card">
-                        <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Laundry">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" style="color: #2E3B4E;">Laundry & Dry Cleaning</h5>
+                    <div class="card h-100 border-0 shadow-sm service-card" style="background: #fff; border-radius: 18px; border-top: 4px solid #D946EF; box-shadow: 0 2px 12px rgba(30,58,95,0.07); transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Laundry" style="border-top-left-radius: 18px; border-top-right-radius: 18px; height: 260px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
+                            <h5 class="card-title"><i class="fas fa-soap" style="color: #D946EF;"></i> Laundry & Dry Cleaning</h5>
                             <p class="card-text">Premium laundry services with express delivery options.</p>
                             <div class="mt-auto">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge" style="background-color: #A7C5BD; color: #2E3B4E;">From ₱500</span>
+                                    <div>
+                                        <span class="h4 mb-0" style="color: #D946EF; font-weight: 800; font-size: 2rem;">₱500.00</span>
+                                        <span class="small text-muted" style="font-size: 1.1rem;">/service</span>
+                                    </div>
                                 </div>
-                                <button class="btn btn-book-service w-100 py-2" style="background-color: #2E3B4E; color: white; font-weight: 600; border-radius: 5px;" onclick="alert('Please login to book services.')">
+                                <button class="btn btn-book-service w-100 py-3" onclick="alert('Please login to book services.')">
                                     ORDER SERVICE <i class="fas fa-arrow-right ms-2"></i>
                                 </button>
                             </div>
@@ -442,6 +465,26 @@
         color: #2E3B4E !important;
         transform: translateY(-2px);
         box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+    }
+
+    #amenities .amenity-card:hover {
+        box-shadow: 0 8px 24px rgba(30,58,95,0.18);
+        background: rgba(255,255,255,0.13);
+        border-bottom: 3px solid #D946EF;
+    }
+
+    .room-section {
+        background: linear-gradient(90deg, #F8FAFC 80%, #E0E7EF 100%);
+        border-radius: 18px;
+        padding: 2.5rem 1.5rem 2rem 1.5rem;
+        margin-bottom: 3rem;
+    }
+    .room-section-title {
+        color: #1E3A5F;
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 0;
     }
 </style>
 @endpush
