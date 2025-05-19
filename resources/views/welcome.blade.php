@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
-    <title>Document</title>
+    <title>Hotel de Luna y Servicio</title>
+    <link rel="icon" type="image/png" href="/images/logo-only.png">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-primary py-3">

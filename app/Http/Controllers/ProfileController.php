@@ -47,6 +47,13 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        
+        // Check if the user has any pending bookings
+        if ($user->role === 'customer' && $user->bookings()->whereIn('status', ['pending', 'approved', 'checked_in'])->exists()) {
+            return Redirect::route('profile.edit')
+                ->withErrors(['account' => 'You cannot delete your account while you have pending bookings. Please contact support for assistance.'])
+                ->withInput();
+        }
 
         Auth::logout();
 

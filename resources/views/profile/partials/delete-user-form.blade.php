@@ -1,4 +1,4 @@
-<section class="space-y-6">
+<section class="space-y-6" id="delete-account">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             {{ __('Delete Account') }}
@@ -9,47 +9,52 @@
         </p>
     </header>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    @error('account')
+        <div class="alert alert-danger">
+            {{ $message }}
+        </div>
+    @enderror
 
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+    <!-- Simple button that opens the form directly -->
+    <button type="button" class="btn btn-danger" onclick="toggleDeleteForm()">
+        {{ __('Delete Account') }}
+    </button>
+
+    <!-- Hidden Delete Form -->
+    <div id="deleteFormContainer" style="display: none; margin-top: 20px; padding: 20px; border: 1px solid #f5c2c7; border-radius: 5px; background-color: #fff1f2;">
+        <form id="deleteAccountForm" method="post" action="{{ route('profile.destroy') }}">
             @csrf
             @method('delete')
-
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Are you sure you want to delete your account?') }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-            </p>
-
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-
-                <x-text-input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
-                />
-
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+            
+            <h5 class="mb-3 text-danger">{{ __('Are you sure you want to delete your account?') }}</h5>
+            
+            <p class="mb-4">{{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm.') }}</p>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">{{ __('Password') }}</label>
+                <input id="password" name="password" type="password" class="form-control" required autofocus>
+                @error('password', 'userDeletion')
+                    <div class="text-danger mt-1">{{ $message }}</div>
+                @enderror
             </div>
-
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
+            
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-secondary me-2" onclick="toggleDeleteForm()">{{ __('Cancel') }}</button>
+                <button type="submit" class="btn btn-danger">{{ __('Delete Account') }}</button>
             </div>
         </form>
-    </x-modal>
+    </div>
+
+    <script>
+        function toggleDeleteForm() {
+            const container = document.getElementById('deleteFormContainer');
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+                // Clear password field when hiding the form
+                document.getElementById('password').value = '';
+            }
+        }
+    </script>
 </section>

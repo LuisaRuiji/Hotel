@@ -33,7 +33,8 @@ class RoomSeeder extends Seeder
                     'capacity' => $roomTypes[$roomType]['capacity'],
                     'description' => "$roomType Room with $view",
                     'status' => 'available',
-                    'floor' => $floor
+                    'floor' => $floor,
+                    'image_url' => 'https://picsum.photos/400/250?random=' . uniqid(),
                 ];
             }
         }

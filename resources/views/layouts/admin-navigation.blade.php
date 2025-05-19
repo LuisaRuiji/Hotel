@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Hotel Management</a>
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('admin.dashboard') }}">
+            <img src="/images/logo-only.png" alt="Hotel Logo" style="height: 40px; width: 40px; margin-right: 8px;">
+            Hotel de Luna y Servicio
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
